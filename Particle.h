@@ -19,7 +19,6 @@ namespace phys
 		void Update(double time) { acceleration = net_force / mass; velocity += acceleration * time; position += velocity * time; }
 	};
 
-	void Elec_Interact(Particle& p1, Particle& p2);
-	void Grav_Interact(Particle& p1, Particle& p2);
+	void Interact(Particle& p1, Particle& p2, double constant);
 	void Collide(Particle& p1, Particle& p2);
 }
