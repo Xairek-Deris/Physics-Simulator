@@ -44,4 +44,4 @@ namespace phys
 		//negation
 		Vector operator- () { return Vector{ -x, -y, -z }; }
 	};
-}
+} 
