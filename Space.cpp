@@ -23,14 +23,14 @@ ref_t phys::Space::Add_Joint(ref_t particle_1, ref_t particle_2,
     {
         ref_t index = m_deleted_joints.back();
         m_deleted_joints.pop_back();
-        m_joints[index] = phys::Joint(&m_particles[particle_1], 
-            &m_particles[particle_2], tension, length);
+        m_joints[index] = phys::Joint(m_particles.data() + particle_1, 
+            m_particles.data() + particle_2, tension, length);
         return index;
     }
     if(m_joints.size() == m_joints.capacity())
         return -1;
-    m_joints.push_back(phys::Joint(&m_particles[particle_1], 
-        &m_particles[particle_2], tension, length));
+    m_joints.push_back(phys::Joint(m_particles.data() + particle_1, 
+        m_particles.data() + particle_2, tension, length));
     return m_joints.size() - 1;
 }
 
@@ -44,5 +44,5 @@ void phys::Space::Remove_Particle(ref_t reference)
 void phys::Space::Remove_Joint(ref_t reference)
 {
     m_deleted_joints.push_back(reference);
-    m_joints[reference] = phys::Joint(&m_particles[0], &m_particles[0], 0, 0);
+    m_joints[reference] = phys::Joint(m_particles.data(), m_particles.data(), 0, 0);
 }

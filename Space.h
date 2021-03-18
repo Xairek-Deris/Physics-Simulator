@@ -22,8 +22,8 @@ namespace phys
 
         void update(double seconds);
 
-        phys::Particle* Particle(ref_t reference) { return &m_particles[reference]; }
-        phys::Joint* Joint(ref_t reference) { return &m_joints[reference]; }
+        phys::Particle* Particle(ref_t reference) { return m_particles.data() + reference; }
+        phys::Joint* Joint(ref_t reference) { return m_joints.data() + reference; }
 
         ref_t Add_Particle(phys::Vector position, phys::Vector velocity, 
 		    double mass, double charge, double radius, double hardness);
