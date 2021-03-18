@@ -10,38 +10,46 @@ namespace phys
 		double z;
 
 		//addition
-		Vector operator+= (const Vector& vec) { x += vec.x; y += vec.y; z += vec.z; return *this; }
-		Vector operator+ (const Vector& vec) const { Vector ret = *this; return ret += vec; }
+		Vector operator+= (const Vector& v) { x += v.x; y += v.y; z += v.z; return *this; }
+		Vector operator+ (const Vector& v) const { Vector ret = *this; return ret += v; }
 
 		//subtraction
-		Vector operator-= (const Vector& vec) { x -= vec.x; y -= vec.y; z -= vec.z; return *this; }
-		Vector operator- (const Vector& vec) const { Vector ret = *this; return ret -= vec; }
+		Vector operator-= (const Vector& v) { x -= v.x; y -= v.y; z -= v.z; return *this; }
+		Vector operator- (const Vector& v) const { Vector ret = *this; return ret -= v; }
 
 		//multiplication by a scalar
-		Vector operator*= (const double mult) { x *= mult; y *= mult; z *= mult; return *this; }
-		Vector operator* (const double mult) const { Vector ret = *this; return ret *= mult; }
+		Vector operator*= (const double d) { x *= d; y *= d; z *= d; return *this; }
+		Vector operator* (const double d) const { Vector ret = *this; return ret *= d; }
 
 		//division by a scalar
-		Vector operator/= (const double div) { x /= div; y /= div; z /= div; return *this; }
-		Vector operator/ (const double div) const { Vector ret = *this; return ret /= div; }
+		Vector operator/= (const double d) { x /= d; y /= d; z /= d; return *this; }
+		Vector operator/ (const double d) const { Vector ret = *this; return ret /= d; }
 
 		//cross product multiplication
 		Vector operator*= (const Vector& vec);
 		Vector operator* (const Vector& vec) const { Vector ret = *this; return ret *= vec; }
 
 		//dot product
-		double Dot(const Vector& vec) { return x * vec.x + y * vec.y + z * vec.z; }
+		double Dot(const Vector& v) const { return x * v.x + y * v.y + z * v.z; }
 
 		//magnitude of the vector squared
-		double Mag_Squared() { return x * x + y * y + z * z; }
+		double Mag_Squared() const { return x * x + y * y + z * z; }
 
 		//magnitude of the vector
-		double Magnitude() { return sqrt(this->Mag_Squared()); }
+		double Magnitude() const { return sqrt(this->Mag_Squared()); }
 
 		//Normalize vector into unit vector
 		void Normalize() { *this /= this->Magnitude(); }
 
 		//negation
-		Vector operator- () { return Vector{ -x, -y, -z }; }
+		Vector operator- () const { return Vector{ -x, -y, -z }; }
+		
+		//relational operators
+		bool operator== (const Vector& v) const { return x == v.x && y == v.y && z == v.z; }
+		bool operator!= (const Vector& v) const { return !(x == v.x && y == v.y && z == v.z); }
+		bool operator> (const Vector& v) const { return Mag_Squared() > v.Mag_Squared(); }
+		bool operator< (const Vector& v) const { return Mag_Squared() < v.Mag_Squared(); }
+		bool operator>= (const Vector& v) const { return Mag_Squared() >= v.Mag_Squared(); }
+		bool operator<= (const Vector& v) const { return Mag_Squared() <= v.Mag_Squared(); }
 	};
-} 
+}

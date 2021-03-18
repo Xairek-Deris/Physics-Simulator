@@ -39,4 +39,3 @@ namespace phys
         std::vector<size_t> m_deleted_joints;
     };
 }
-//impliment update function
