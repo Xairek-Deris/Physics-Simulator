@@ -21,8 +21,6 @@ namespace phys
 		double radius;
 		double hardness;
 
-		phys::Vector Position() { return position; }
-		void Add_Force(phys::Vector force) { net_force += force; }
 		void Update(double time) 
 		{
 			 acceleration = net_force / mass; 
@@ -30,11 +28,10 @@ namespace phys
 			 position += velocity * time; 
 			 net_force -= net_force;
 		}
-
-		friend void Interact(Particle& p1, Particle& p2, double constant);
-		friend void Collide(Particle& p1, Particle& p2);
 	};
-
-	void Interact(Particle& p1, Particle& p2, double constant);
+	
+	void Electric(Particle& p1, Particle& p2);
+	void Gravitate(Particle& p1, Particle& p2);
 	void Collide(Particle& p1, Particle& p2);
+
 }

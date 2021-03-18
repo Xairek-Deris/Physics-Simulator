@@ -4,7 +4,19 @@
 
 void phys::Space::Update(double time)
 {
-
+    for(auto i = m_particles.begin(); i != m_particles.end(); i++)
+        for(auto j = i + 1; j != m_particles.end(); j++)
+        {
+            Electric(*i, *j);
+            Gravitate(*i, *j);
+            Collide(*i, *j);
+        }
+    
+    for(auto& i : m_joints)
+        i.Apply(m_particles.data());
+    
+    for(auto& i : m_particles)
+        i.Update(time);
 }
 
 ref_t phys::Space::Add_Particle(Particle& particle)
