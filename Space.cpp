@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
+//calculates all particle positions in the space
 void phys::Space::Update(double time)
 {
     for(auto i = m_particles.begin(); i != m_particles.end(); i++)
@@ -19,11 +20,12 @@ void phys::Space::Update(double time)
         i.Update(time);
 }
 
-ref_t phys::Space::Add_Particle(Particle& particle)
+//adds a particle to the space, returns -1 if space is full
+long long phys::Space::Add_Particle(Particle& particle)
 {
     if(m_deleted_particles.size() > 0)
     {
-        ref_t index = m_deleted_particles.back();
+        size_t index = m_deleted_particles.back();
         m_deleted_particles.pop_back();
         m_particles[index] = particle;
         return index;
@@ -34,11 +36,12 @@ ref_t phys::Space::Add_Particle(Particle& particle)
     return m_particles.size() - 1;
 }
 
-ref_t phys::Space::Add_Joint(Joint& joint)
+//adds a joint to the space, returns -1 if space is full
+long long phys::Space::Add_Joint(Joint& joint)
 {
     if(m_deleted_joints.size() > 0)
     {
-        ref_t index = m_deleted_joints.back();
+        size_t index = m_deleted_joints.back();
         m_deleted_joints.pop_back();
         m_joints[index] = joint;
         return index;
@@ -49,19 +52,22 @@ ref_t phys::Space::Add_Joint(Joint& joint)
     return m_joints.size() - 1;
 }
 
-void phys::Space::Remove_Particle(ref_t reference)
+//removes a particle from the space without invalidating the references
+void phys::Space::Remove_Particle(size_t reference)
 {
     m_deleted_particles.push_back(reference);
     m_particles[reference] = phys::Particle(phys::Vector{ 0, 0, 0 }, 
         phys::Vector{ 0, 0, 0 }, 0, 0, 0, 0);
 }
 
-void phys::Space::Remove_Joint(ref_t reference)
+//removes a joint from the space without invalidating the references
+void phys::Space::Remove_Joint(size_t reference)
 {
     m_deleted_joints.push_back(reference);
     m_joints[reference] = Joint(0, 0, 0, 0);
 }
 
+//loads data from a file into the space, returns -1 upon failure
 int phys::Space::Load(std::string filename)
 {
     FILE* file = fopen(filename.c_str(), "r");
@@ -82,17 +88,18 @@ int phys::Space::Load(std::string filename)
 
     fread(&count, sizeof(count), 1, file);
     m_deleted_particles.reserve(count + 10);
-    fread(m_deleted_particles.data(), sizeof(ref_t), count, file);
+    fread(m_deleted_particles.data(), sizeof(size_t), count, file);
 
     fread(&count, sizeof(count), 1, file);
     m_deleted_joints.reserve(count + 10);
-    fread(m_deleted_joints.data(), sizeof(ref_t), count, file);
+    fread(m_deleted_joints.data(), sizeof(size_t), count, file);
 
     fclose(file);
 
     return 0;
 }
 
+//saves data from the space into a file, returns -1 upon failure
 int phys::Space::Save(std::string filename)
 {
     FILE* file = fopen(filename.c_str(), "w");
@@ -109,11 +116,11 @@ int phys::Space::Save(std::string filename)
 
     count = m_deleted_particles.size();
     fwrite(&count, sizeof(count), 1, file);
-    fwrite(m_deleted_particles.data(), sizeof(ref_t), count, file);
+    fwrite(m_deleted_particles.data(), sizeof(size_t), count, file);
 
     count = m_deleted_joints.size();
     fwrite(&count, sizeof(count), 1, file);
-    fwrite(m_deleted_joints.data(), sizeof(ref_t), count, file);
+    fwrite(m_deleted_joints.data(), sizeof(size_t), count, file);
 
     fclose(file);
 

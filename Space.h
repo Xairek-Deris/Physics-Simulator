@@ -6,8 +6,6 @@
 #include "Joint.h"
 #include "Vec.h"
 
-typedef int ref_t;
-
 namespace phys
 {
     class Space
@@ -21,14 +19,14 @@ namespace phys
 
         void Update(double time);
 
-        phys::Particle* Get_Particle(ref_t reference) { return m_particles.data() + reference; }
-        phys::Joint* Get_Joint(ref_t reference) { return m_joints.data() + reference; }
+        phys::Particle* Get_Particle(size_t reference) { return m_particles.data() + reference; }
+        phys::Joint* Get_Joint(size_t reference) { return m_joints.data() + reference; }
 
-        ref_t Add_Particle(Particle& particle);
-        ref_t Add_Joint(Joint& joint);
+        long long Add_Particle(Particle& particle);
+        long long Add_Joint(Joint& joint);
 
-        void Remove_Particle(ref_t reference);
-        void Remove_Joint(ref_t reference);
+        void Remove_Particle(size_t reference);
+        void Remove_Joint(size_t reference);
 
         int Load(std::string filename);
         int Save(std::string filename);
@@ -37,8 +35,8 @@ namespace phys
         std::vector<phys::Particle> m_particles;
         std::vector<phys::Joint> m_joints;
 
-        std::vector<ref_t> m_deleted_particles;
-        std::vector<ref_t> m_deleted_joints;
+        std::vector<size_t> m_deleted_particles;
+        std::vector<size_t> m_deleted_joints;
     };
 }
 //impliment update function
