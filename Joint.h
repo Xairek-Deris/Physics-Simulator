@@ -2,18 +2,21 @@
 #include "Vec.h"
 #include "Particle.h"
 
+typedef int ref_t;
+
 namespace phys
 {
     struct Joint
     {
-        Joint(phys::Particle* particle_1, phys::Particle* particle_2, double tension, double length)
-            : particle_1{ particle_1 }, particle_2{ particle_2 }, tension{ tension }, length{ length } {}
+        Joint(ref_t particle_1, ref_t particle_2, double tension, double length)
+            : particle_1{ particle_1 }, particle_2{ particle_2 }, tension{ tension },
+            length{ length } {}
 
-        phys::Particle* particle_1;
-        phys::Particle* particle_2;
+        ref_t particle_1;
+        ref_t particle_2;
         double tension;
         double length;
 
-        void Apply();
+        void Apply(Particle* particles);
     };
 }

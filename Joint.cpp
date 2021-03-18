@@ -1,11 +1,11 @@
 #include "Joint.h"
 
-void phys::Joint::Apply()
+void phys::Joint::Apply(Particle* particles)
 {
-	phys::Vector vec = particle_1->position - particle_2->position;
+	phys::Vector vec = (particles + particle_1)->position - (particles + particle_2)->position;
 	double mag = vec.Magnitude();
 	vec /= mag;
 	vec *= (length - mag) * tension;
-	particle_1->Add_Force(vec);
-	particle_2->Add_Force(-vec);
+	(particles + particle_1)->Add_Force(vec);
+	(particles + particle_2)->Add_Force(-vec);
 }

@@ -1,36 +1,39 @@
 #include "Space.h"
 
-ref_t phys::Space::Add_Particle(phys::Vector position, phys::Vector velocity, 
-	double mass, double charge, double radius, double hardness)
+#include <stdio.h>
+
+void phys::Space::Update(double time)
+{
+
+}
+
+ref_t phys::Space::Add_Particle(Particle& particle)
 {
     if(m_deleted_particles.size() > 0)
     {
         ref_t index = m_deleted_particles.back();
         m_deleted_particles.pop_back();
-        m_particles[index] = phys::Particle(position, velocity, mass, charge, radius, hardness);
+        m_particles[index] = particle;
         return index;
     }
     if(m_particles.size() == m_particles.capacity())
         return -1;
-    m_particles.push_back(phys::Particle(position, velocity, mass, charge, radius, hardness));
+    m_particles.push_back(particle);
     return m_particles.size() - 1;
 }
 
-ref_t phys::Space::Add_Joint(ref_t particle_1, ref_t particle_2, 
-    double tension, double length)
+ref_t phys::Space::Add_Joint(Joint& joint)
 {
     if(m_deleted_joints.size() > 0)
     {
         ref_t index = m_deleted_joints.back();
         m_deleted_joints.pop_back();
-        m_joints[index] = phys::Joint(m_particles.data() + particle_1, 
-            m_particles.data() + particle_2, tension, length);
+        m_joints[index] = joint;
         return index;
     }
     if(m_joints.size() == m_joints.capacity())
         return -1;
-    m_joints.push_back(phys::Joint(m_particles.data() + particle_1, 
-        m_particles.data() + particle_2, tension, length));
+    m_joints.push_back(joint);
     return m_joints.size() - 1;
 }
 
@@ -44,5 +47,63 @@ void phys::Space::Remove_Particle(ref_t reference)
 void phys::Space::Remove_Joint(ref_t reference)
 {
     m_deleted_joints.push_back(reference);
-    m_joints[reference] = phys::Joint(m_particles.data(), m_particles.data(), 0, 0);
+    m_joints[reference] = Joint(0, 0, 0, 0);
+}
+
+int phys::Space::Load(std::string filename)
+{
+    FILE* file = fopen(filename.c_str(), "r");
+    if(file == nullptr)
+        return -1;
+
+    unsigned count;
+
+    fread(&count, sizeof(count), 1, file);
+    if(count > m_particles.size())
+        m_particles.reserve(count);
+    fread(m_particles.data(), sizeof(Particle), count, file);
+
+    fread(&count, sizeof(count), 1, file);
+    if(count > m_joints.size())
+        m_joints.reserve(count);
+    fread(m_joints.data(), sizeof(Joint), count, file);
+
+    fread(&count, sizeof(count), 1, file);
+    m_deleted_particles.reserve(count + 10);
+    fread(m_deleted_particles.data(), sizeof(ref_t), count, file);
+
+    fread(&count, sizeof(count), 1, file);
+    m_deleted_joints.reserve(count + 10);
+    fread(m_deleted_joints.data(), sizeof(ref_t), count, file);
+
+    fclose(file);
+
+    return 0;
+}
+
+int phys::Space::Save(std::string filename)
+{
+    FILE* file = fopen(filename.c_str(), "w");
+    if(file == nullptr)
+        return -1;
+    
+    unsigned count = m_particles.size();
+    fwrite(&count, sizeof(count), 1, file);
+    fwrite(m_particles.data(), sizeof(Particle), count, file);
+
+    count = m_joints.size();
+    fwrite(&count, sizeof(count), 1, file);
+    fwrite(m_joints.data(), sizeof(Joint), count, file);
+
+    count = m_deleted_particles.size();
+    fwrite(&count, sizeof(count), 1, file);
+    fwrite(m_deleted_particles.data(), sizeof(ref_t), count, file);
+
+    count = m_deleted_joints.size();
+    fwrite(&count, sizeof(count), 1, file);
+    fwrite(m_deleted_joints.data(), sizeof(ref_t), count, file);
+
+    fclose(file);
+
+    return 0;
 }

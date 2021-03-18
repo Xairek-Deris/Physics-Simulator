@@ -1,5 +1,7 @@
 #include <vector>
 
+#include <string>
+
 #include "Particle.h"
 #include "Joint.h"
 #include "Vec.h"
@@ -15,22 +17,21 @@ namespace phys
         { 
             m_particles.reserve(particles); 
             m_joints.reserve(joints);
-            //first particle is blank to allow deleted joints to reference it
-            m_particles.push_back(phys::Particle(phys::Vector{ 0, 0, 0 }, 
-                phys::Vector{ 0, 0, 0 }, 0, 0, 0, 0));
         }
 
-        void update(double seconds);
+        void Update(double time);
 
-        phys::Particle* Particle(ref_t reference) { return m_particles.data() + reference; }
-        phys::Joint* Joint(ref_t reference) { return m_joints.data() + reference; }
+        phys::Particle* Get_Particle(ref_t reference) { return m_particles.data() + reference; }
+        phys::Joint* Get_Joint(ref_t reference) { return m_joints.data() + reference; }
 
-        ref_t Add_Particle(phys::Vector position, phys::Vector velocity, 
-		    double mass, double charge, double radius, double hardness);
-        ref_t Add_Joint(ref_t particle_1, ref_t particle_2, double tension, double length);
+        ref_t Add_Particle(Particle& particle);
+        ref_t Add_Joint(Joint& joint);
 
         void Remove_Particle(ref_t reference);
         void Remove_Joint(ref_t reference);
+
+        int Load(std::string filename);
+        int Save(std::string filename);
 
     private:
         std::vector<phys::Particle> m_particles;
@@ -40,5 +41,4 @@ namespace phys
         std::vector<ref_t> m_deleted_joints;
     };
 }
-//TODO add loading and unloading functions
 //impliment update function
