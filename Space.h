@@ -15,9 +15,10 @@ namespace phys
         { 
             m_particles.reserve(particles); 
             m_joints.reserve(joints);
+            //first particle is blank to allow deleted joints to reference it
             m_particles.push_back(phys::Particle(phys::Vector{ 0, 0, 0 }, 
                 phys::Vector{ 0, 0, 0 }, 0, 0, 0, 0));
-        } 
+        }
 
         void update(double seconds);
 
@@ -26,8 +27,7 @@ namespace phys
 
         ref_t Add_Particle(phys::Vector position, phys::Vector velocity, 
 		    double mass, double charge, double radius, double hardness);
-        ref_t Add_Joint(ref_t particle_1, ref_t particle_2, 
-            double tension, double length);
+        ref_t Add_Joint(ref_t particle_1, ref_t particle_2, double tension, double length);
 
         void Remove_Particle(ref_t reference);
         void Remove_Joint(ref_t reference);
@@ -36,8 +36,8 @@ namespace phys
         std::vector<phys::Particle> m_particles;
         std::vector<phys::Joint> m_joints;
 
-        std::vector<ref_t> m_particle_refs;
-        std::vector<ref_t> m_joint_refs;
+        std::vector<ref_t> m_deleted_particles;
+        std::vector<ref_t> m_deleted_joints;
     };
 }
 //TODO add loading and unloading functions
