@@ -1,5 +1,7 @@
 #include "Space.h"
 
+#include <string>
+
 #include <stdio.h>
 
 //calculates all particle positions in the space
@@ -12,10 +14,8 @@ void phys::Space::Update(double time)
             Gravitate(*i, *j);
             Collide(*i, *j);
         }
-    
     for(auto& i : m_joints)
         i.Apply(m_particles.data());
-    
     for(auto& i : m_particles)
         i.Update(time);
 }
@@ -56,7 +56,7 @@ long long phys::Space::Add_Joint(Joint& joint)
 void phys::Space::Remove_Particle(size_t reference)
 {
     m_deleted_particles.push_back(reference);
-    m_particles[reference] = phys::Particle(phys::Vector{ 0, 0, 0 }, 
+    m_particles[reference] = phys::Particle(phys::Vector{ 0, 0, 0 },
         phys::Vector{ 0, 0, 0 }, 0, 0, 0, 0);
 }
 
@@ -73,7 +73,6 @@ int phys::Space::Load(std::string filename)
     FILE* file = fopen(filename.c_str(), "r");
     if(file == nullptr)
         return -1;
-
     unsigned count;
 
     fread(&count, sizeof(count), 1, file);
@@ -95,7 +94,6 @@ int phys::Space::Load(std::string filename)
     fread(m_deleted_joints.data(), sizeof(size_t), count, file);
 
     fclose(file);
-
     return 0;
 }
 
@@ -105,7 +103,7 @@ int phys::Space::Save(std::string filename)
     FILE* file = fopen(filename.c_str(), "w");
     if(file == nullptr)
         return -1;
-    
+
     unsigned count = m_particles.size();
     fwrite(&count, sizeof(count), 1, file);
     fwrite(m_particles.data(), sizeof(Particle), count, file);
@@ -123,6 +121,5 @@ int phys::Space::Save(std::string filename)
     fwrite(m_deleted_joints.data(), sizeof(size_t), count, file);
 
     fclose(file);
-
     return 0;
 }
