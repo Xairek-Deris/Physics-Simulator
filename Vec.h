@@ -39,7 +39,7 @@ namespace phys
 		double Magnitude() const { return sqrt(this->Mag_Squared()); }
 
 		//Normalize vector into unit vector
-		void Normalize() { *this /= this->Magnitude(); }
+		Vector Normalize() { *this /= this->Magnitude(); return *this; }
 
 		//negation
 		Vector operator- () const { return Vector{ -x, -y, -z }; }
@@ -47,9 +47,5 @@ namespace phys
 		//relational operators
 		bool operator== (const Vector& v) const { return x == v.x && y == v.y && z == v.z; }
 		bool operator!= (const Vector& v) const { return !(x == v.x && y == v.y && z == v.z); }
-		bool operator> (const Vector& v) const { return Mag_Squared() > v.Mag_Squared(); }
-		bool operator< (const Vector& v) const { return Mag_Squared() < v.Mag_Squared(); }
-		bool operator>= (const Vector& v) const { return Mag_Squared() >= v.Mag_Squared(); }
-		bool operator<= (const Vector& v) const { return Mag_Squared() <= v.Mag_Squared(); }
 	};
 }
