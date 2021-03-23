@@ -35,8 +35,7 @@ void phys::Collide(Particle& p1, Particle& p2)
 	if (depth > 0)
 	{
 		vec /= mag;													//normalize dist vector
-		vec *= depth * (p1.hardness < p2.hardness ?
-			p1.hardness : p2.hardness);	 						//force calculated using the softer object
+		vec *= 1e6 * depth * (p1.hardness < p2.hardness ? p1.hardness : p2.hardness);	 	//force calculated using the softer object
 		p1.net_force += vec;
 		p2.net_force -= vec;
 	}
