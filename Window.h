@@ -4,8 +4,6 @@ namespace win
 {
     static bool sdl_initialized = false;
 
-    class Texture;
-
     class Window
     {
     public:
@@ -16,17 +14,18 @@ namespace win
             SDL_DestroyWindow(m_window);
         }
 
-        void Update() { SDL_RenderPresent(m_renderer); }
+        bool should_close;
+
+        void Update();
         void Clear() { SDL_RenderClear(m_renderer); }
         int Height() {return m_height;}
         int Width() {return m_width;}
-        void Resize(int width, int height) {m_width = width; m_height = height;}
+        SDL_Renderer* Renderer() { return m_renderer; }
 
     private:
         int m_width;
         int m_height;
         SDL_Window* m_window;
         SDL_Renderer* m_renderer;
-        friend Texture::Texture(const char* file, Window* window);
     };
 }

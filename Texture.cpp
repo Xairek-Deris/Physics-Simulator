@@ -1,11 +1,12 @@
 #include "Texture.h"
 #include "Window.h"
 
-win::Texture::Texture(const char* file, Window* window)
+win::Texture::Texture(const char* file, Window& window)
 {
     SDL_Surface* surface = SDL_LoadBMP(file);
-    m_texture = SDL_CreateTextureFromSurface(window->m_renderer, surface);
-    m_renderer = window->m_renderer;
+    SDL_SetColorKey( surface, SDL_TRUE, SDL_MapRGB( surface->format, 0xFF, 0xFF, 0xFF ) );
+    m_texture = SDL_CreateTextureFromSurface(window.Renderer(), surface);
+    m_renderer = window.Renderer();
     SDL_FreeSurface(surface);
 }
 

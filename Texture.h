@@ -7,7 +7,7 @@ namespace win
     class Texture
     {
     public:
-        Texture(const char* file, Window* window);
+        Texture(const char* file, Window& window);
         ~Texture() { SDL_DestroyTexture(m_texture); }
         void Draw(int x, int y, int width, int height);
 
