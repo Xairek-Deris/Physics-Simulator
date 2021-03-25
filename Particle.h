@@ -6,7 +6,7 @@
 
 namespace phys
 {
-	class Particle
+	struct Particle
 	{
 	public:
 		Particle(phys::Vector position, phys::Vector velocity,
@@ -17,13 +17,12 @@ namespace phys
 			charge{ charge }, radius{ radius }, hardness{ hardness } {}
 		phys::Vector position;
 		phys::Vector velocity;
+		phys::Vector acceleration;
+		phys::Vector net_force;
 		double mass;
 		double charge;
 		double radius;
 		double hardness;
-	private:
-		phys::Vector acceleration;
-		phys::Vector net_force;
 		static void Electrify(Particle& p1, Particle& p2);
 		static void Gravitate(Particle& p1, Particle& p2);
 		static void Collide(Particle& p1, Particle& p2);

@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "Vec.h"
+
 void phys::Particle::Electrify(phys::Particle& p1, phys::Particle& p2)
 {
 	phys::Vector vec = p1.position - p2.position;
