@@ -1,5 +1,7 @@
 #include "Particle.h"
 
+#include <vector>
+
 void phys::Electric(phys::Particle& p1, phys::Particle& p2)
 {
 	phys::Vector vec = p1.position - p2.position;
@@ -39,4 +41,15 @@ void phys::Collide(Particle& p1, Particle& p2)
 		p1.net_force += vec;
 		p2.net_force -= vec;
 	}
+}
+
+void phys::Interact_All(std::vector<Particle> particles)
+{
+	for(auto i = particles.begin(); i != particles.end(); i++)
+    	for(auto j = i + 1; j != particles.end(); j++)
+    	{
+        	Electric(*i, *j);
+        	Gravitate(*i, *j);
+        	Collide(*i, *j);
+    	}
 }
