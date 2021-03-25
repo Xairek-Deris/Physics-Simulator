@@ -6,24 +6,27 @@
 
 namespace phys
 {
-	struct Particle
+	class Particle
 	{
+	public:
 		Particle(phys::Vector position, phys::Vector velocity,
 		double mass, double charge, double radius, double hardness)
 			: position{ position }, velocity{ velocity },
 			acceleration{ phys::Vector{ 0,0,0 } },
 			net_force{ phys::Vector{ 0,0,0 } }, mass{mass},
 			charge{ charge }, radius{ radius }, hardness{ hardness } {}
-
 		phys::Vector position;
 		phys::Vector velocity;
-		phys::Vector acceleration;
-		phys::Vector net_force;
 		double mass;
 		double charge;
 		double radius;
 		double hardness;
-
+	private:
+		phys::Vector acceleration;
+		phys::Vector net_force;
+		static void Electrify(Particle& p1, Particle& p2);
+		static void Gravitate(Particle& p1, Particle& p2);
+		static void Collide(Particle& p1, Particle& p2);
 		void Update(double time)
 		{
 			acceleration = net_force / mass;
@@ -32,9 +35,4 @@ namespace phys
 			net_force -= net_force;
 		}
 	};
-
-	void Electric(Particle& p1, Particle& p2);
-	void Gravitate(Particle& p1, Particle& p2);
-	void Collide(Particle& p1, Particle& p2);
-	void Interact_All(std::vector<Particle>& particles);
 }

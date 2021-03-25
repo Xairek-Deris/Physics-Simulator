@@ -2,7 +2,7 @@
 
 #include <vector>
 
-void phys::Electric(phys::Particle& p1, phys::Particle& p2)
+void phys::Particle::Electrify(phys::Particle& p1, phys::Particle& p2)
 {
 	phys::Vector vec = p1.position - p2.position;
 	double mag = vec.Magnitude();
@@ -14,7 +14,7 @@ void phys::Electric(phys::Particle& p1, phys::Particle& p2)
 	p2.net_force -= vec;
 }
 
-void phys::Gravitate(phys::Particle& p1, phys::Particle& p2)
+void phys::Particle::Gravitate(phys::Particle& p1, phys::Particle& p2)
 {
 	phys::Vector vec = p1.position - p2.position;
 	double mag = vec.Magnitude();
@@ -26,7 +26,7 @@ void phys::Gravitate(phys::Particle& p1, phys::Particle& p2)
 	p2.net_force -= vec;
 }
 
-void phys::Collide(Particle& p1, Particle& p2)
+void phys::Particle::Collide(Particle& p1, Particle& p2)
 {
 		phys::Vector vec = p1.position - p2.position;
 	double mag = vec.Magnitude();
@@ -41,15 +41,4 @@ void phys::Collide(Particle& p1, Particle& p2)
 		p1.net_force += vec;
 		p2.net_force -= vec;
 	}
-}
-
-void phys::Interact_All(std::vector<Particle>& particles)
-{
-	for(auto i = particles.begin(); i != particles.end(); i++)
-    	for(auto j = i + 1; j != particles.end(); j++)
-    	{
-        	Electric(*i, *j);
-        	Gravitate(*i, *j);
-        	Collide(*i, *j);
-    	}
 }
