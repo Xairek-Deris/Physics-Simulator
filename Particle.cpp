@@ -43,7 +43,7 @@ void phys::Collide(Particle& p1, Particle& p2)
 	}
 }
 
-void phys::Interact_All(std::vector<Particle> particles)
+void phys::Interact_All(std::vector<Particle>& particles)
 {
 	for(auto i = particles.begin(); i != particles.end(); i++)
     	for(auto j = i + 1; j != particles.end(); j++)

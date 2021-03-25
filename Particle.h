@@ -36,5 +36,5 @@ namespace phys
 	void Electric(Particle& p1, Particle& p2);
 	void Gravitate(Particle& p1, Particle& p2);
 	void Collide(Particle& p1, Particle& p2);
-	void Interact_All(std::vector<Particle> particles);
+	void Interact_All(std::vector<Particle>& particles);
 }
