@@ -23,7 +23,7 @@ void phys::Particle::Gravitate(phys::Particle& p1, phys::Particle& p2)
 	if (mag == 0)													//distance of 0 would have no net direction, so no net force
 		return;
 	vec /= mag;														//normalized distance vector	
-	vec *= 6.67408e-11 * p1.mass * p2.mass / (mag * mag);			//Coulomb's constant
+	vec *= -6.67408e-11 * p1.mass * p2.mass / (mag * mag);			//Coulomb's constant
 	p1.net_force += vec;
 	p2.net_force -= vec;
 }
