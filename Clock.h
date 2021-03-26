@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-namespace phys
+namespace time
 {
 class Clock
     {
