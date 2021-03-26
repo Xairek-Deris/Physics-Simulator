@@ -22,7 +22,8 @@ namespace win
         void Clear() const { SDL_RenderClear(m_renderer); }
         int Height() const { return m_height; }
         int Width() const { return m_width; }
-        bool Should_Close() { return m_quit; }
+        bool Should_Close() { return m_close; }
+        void Close() { m_close = true; }
         static int Init()
         {
             if(SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -36,7 +37,7 @@ namespace win
     private:
         int m_width;
         int m_height;
-        bool m_quit;
+        bool m_close;
         SDL_Window* m_window;
         SDL_Renderer* m_renderer;
         friend class Texture;

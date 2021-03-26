@@ -6,7 +6,7 @@
 #include <SDL2/SDL.h>
 
 win::Window::Window(const std::string& title, int width, int height)
-    : m_width{ width }, m_height{ height }, m_window{ NULL }, m_renderer{ NULL }, m_quit{ false }
+    : m_width{ width }, m_height{ height }, m_window{ NULL }, m_renderer{ NULL }, m_close{ false }
 {
     m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if(m_window == NULL)
@@ -25,7 +25,7 @@ void win::Window::Update()
     {
     if(event.type == SDL_QUIT)
         {
-            m_quit = true;
+            m_close = true;
         }
         else if ( event.type == SDL_WINDOWEVENT )
         {
