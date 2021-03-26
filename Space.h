@@ -1,8 +1,9 @@
+#pragma once
+
 #include <string>
 #include <vector>
 
 #include "Particle.h"
-#include "Vec.h"
 
 namespace phys
 {

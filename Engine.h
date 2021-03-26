@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Clock.h"
 #include "Space.h"
 
