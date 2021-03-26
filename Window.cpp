@@ -11,7 +11,7 @@ void disp::Window::Poll_Events()
     {
     if(event.type == SDL_QUIT)
         {
-            m_close = true;
+            m_quit = true;
         }
         else if ( event.type == SDL_WINDOWEVENT )
         {
