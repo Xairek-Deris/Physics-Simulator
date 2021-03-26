@@ -29,11 +29,14 @@ class Clock
 
         void Resume()
         {
-            auto current_time = std::chrono::high_resolution_clock::now();
-            auto duration = current_time - m_stop_point;
-            m_start_point += duration;
-            m_lap_point += duration;
-            m_paused = false;
+            if(m_paused)
+            {
+                auto current_time = std::chrono::high_resolution_clock::now();
+                auto duration = current_time - m_stop_point;
+                m_start_point += duration;
+                m_lap_point += duration;
+                m_paused = false;
+            }
         }
 
         double Time()
