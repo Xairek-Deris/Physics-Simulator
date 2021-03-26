@@ -7,7 +7,7 @@
 
 #include "Particle.h"
 
-int phys::Space::Load(std::string& filename)
+int phys::Space::Load(const std::string& filename)
 {
 	FILE* file = fopen(filename.c_str(), "r");
 	if(file == NULL)
@@ -20,7 +20,7 @@ int phys::Space::Load(std::string& filename)
 	return 0;
 }
 
-int phys::Space::Save(std::string& filename)
+int phys::Space::Save(const std::string& filename)
 {
 	FILE* file = fopen(filename.c_str(), "w");
 	if(file == NULL)

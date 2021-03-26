@@ -1,13 +1,14 @@
 #include "Window.h"
 
 #include <iostream>
+#include <string>
 
 #include <SDL2/SDL.h>
 
-win::Window::Window(const char * title, int width, int height)
+win::Window::Window(const std::string& title, int width, int height)
     : m_width{ width }, m_height{ height }, m_window{ NULL }, m_renderer{ NULL }, should_close{ false }
 {
-    m_window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if(m_window == NULL)
     {
         std::cout << "Failed to create window: " << SDL_GetError() << std::endl;

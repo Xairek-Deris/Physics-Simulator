@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 
 #include <SDL2/SDL.h>
 
@@ -9,7 +10,7 @@ namespace win
     class Window
     {
     public:
-        Window(const char * title, int width, int height);
+        Window(const std::string& title, int width, int height);
 
         ~Window()
         {
@@ -20,9 +21,9 @@ namespace win
         bool should_close;
 
         void Update();
-        void Clear() { SDL_RenderClear(m_renderer); }
-        int Height() { return m_height; }
-        int Width() { return m_width; }
+        void Clear() const { SDL_RenderClear(m_renderer); }
+        int Height() const { return m_height; }
+        int Width() const { return m_width; }
         static int Init()
         {
             if(SDL_Init(SDL_INIT_VIDEO) != 0)

@@ -14,8 +14,8 @@ namespace phys
             particles.reserve(num_particles);
         }
 
-        int Load(std::string& filename);
-        int Save(std::string& filename);
+        int Load(const std::string& filename);
+        int Save(const std::string& filename);
         void Update(double time);
 
         std::vector<Particle> particles;
