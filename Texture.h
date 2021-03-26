@@ -4,14 +4,14 @@
 
 #include <SDL2/SDL.h>
 
-#include "Window.h"
-
-namespace win
+namespace disp
 {
+    class Renderer;
+
     class Texture
     {
     public:
-        Texture(const std::string& filename, const Window& window);
+        Texture(const std::string& filename, const Renderer& renderer);
         ~Texture() { SDL_DestroyTexture(m_texture); }
         void Draw(int x, int y, int w, int h) const
         {

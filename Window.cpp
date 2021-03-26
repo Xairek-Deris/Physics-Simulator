@@ -1,24 +1,10 @@
 #include "Window.h"
 
 #include <iostream>
-#include <string>
 
 #include <SDL2/SDL.h>
 
-win::Window::Window(const std::string& title, int width, int height)
-    : m_width{ width }, m_height{ height }, m_window{ NULL }, m_renderer{ NULL }, m_close{ false }
-{
-    m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-    if(m_window == NULL)
-    {
-        std::cout << "Failed to create window: " << SDL_GetError() << std::endl;
-        return;
-    }
-    m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    SDL_SetRenderDrawColor( m_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-}
-
-void win::Window::Update()
+void disp::Window::Poll_Events()
 {
     SDL_Event event;
     while(SDL_PollEvent(&event) != 0)
@@ -36,5 +22,4 @@ void win::Window::Update()
             }
         }
     }
-    SDL_RenderPresent(m_renderer); 
 }
