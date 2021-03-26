@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+
+#include "Window.h"
+#include "Texture.h"
+#include "Clock.h"
+#include "Particle.h"
+#include "Vec.h"
+#include "Thread.h"
+#include "Renderer.h"
+#include "Init_SDL.h"
+#include "Space.h"
+
+long long dframes = 0;
+long long pframes = 0;
+bool quit = false;
+bool pause = false;
+phys::Space* g_space;
+disp::Renderer* g_renderer;
+disp::Window* g_window;
+disp::Texture* g_texture;
+
+int physics(void*)
+{
+    time::Clock clock;
+    while(!quit)
+    {
+        if(!pause)
+        {
+            clock.Resume();
+            while(!pause)
+            {
+                g_space->Update(clock.Lap());
+                pframes++;
+            }
+            clock.Stop();
+        }
+    }
+    return 0;
+}
+
+int display(void*)
+{
+    while(!quit)
+    {
+        for(auto& i : g_space->particles)
+        {
+            g_renderer->Clear();
+            g_texture->Draw(i.position.x * 100, g_window->Height() - (i.position.y + i.radius) * 100, i.radius * 2 * 100, i.radius * 2 * 100);
+            g_renderer->Update();
+        }
+    }
+}
+
+int main(int argc, char** argv)
+{
+    disp::Init();
+    disp::Window window("Simulation", 1280, 1280);
+
+    disp::Renderer renderer(window);
+    disp::Texture texture("ball.bmp", renderer);
+    phys::Space space;
+    space.particles.push_back(phys::Particle(phys::Vector{0,12.80,0}, phys::Vector{1,0,0}, 10, 0, 1, 1));
+    space.particles.push_back(phys::Particle(phys::Vector{10,9,0}, phys::Vector{0,0,0}, 10, 0, 1, 1));
+    space.particles.push_back(phys::Particle(phys::Vector{5, -6360000, 0}, phys::Vector{0,0,0}, 5.97e24, 0, 6360000, 1));
+    win::Thread phys_thread(physics, "Physics Thread", NULL);
+    win::Thread disp_thread(display, "Display Thread", NULL);
+    while(!window.Should_Quit())
+    {
+        window.Poll_Events();
+    }
+    quit = true;
+    phys_thread.Wait();
+    disp_thread.Wait();
+    std::cout << pframes/dframes << std::endl;
+}
