@@ -10,6 +10,7 @@ namespace phys
     {
     public:
         Engine(int num_particles = 5) : m_stop{ false }, m_stopped{ true }, m_pause{ false }, m_paused{ true }, Space(num_particles){}
+        ~Engine() { Stop(); }
         void Run();
         void Stop() { m_stop = true; m_pause = true; m_clock.Stop(); }
         void Pause() { m_pause = true; m_clock.Stop(); }
