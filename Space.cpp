@@ -33,7 +33,7 @@ int phys::Space::Save(const std::string& filename)
 
 void phys::Space::Update(double time)
 {
-	for(auto i = particles.begin(); i != particles.end(); i++)
+	for(auto i = particles.begin(); i < particles.end() - 1; i++)
     	for(auto j = i + 1; j != particles.end(); j++)
     	{
         	Particle::Electrify(*i, *j);

@@ -9,11 +9,6 @@ namespace phys
 {
     struct Space
     {
-        Space(int num_particles = 5)
-        {
-            particles.reserve(num_particles);
-        }
-
         int Load(const std::string& filename);
         int Save(const std::string& filename);
         void Update(double time);
