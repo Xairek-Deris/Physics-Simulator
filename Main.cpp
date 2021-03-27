@@ -17,13 +17,13 @@ namespace phys
     long long pframes = 0;
     bool pause = false;
     phys::Space* space;
-    disp::Window* window;
+    phys::Window* window;
     double ratio = 100;
     phys::Vector camera = phys::Vector{0,0,0};
 
     int physics(void*)
     {
-        tick::Clock clock;
+        phys::Clock clock;
         while(!window->Should_Quit())
         {
             if(!pause)
@@ -42,8 +42,8 @@ namespace phys
 
     int display(void*)
     {
-        disp::Renderer renderer(*window);
-        disp::Texture texture("ball.bmp", renderer);
+        phys::Renderer renderer(*window);
+        phys::Texture texture("ball.bmp", renderer);
         while(!window->Should_Quit())
         {
             renderer.Clear();
@@ -70,13 +70,13 @@ namespace phys
 
 int main(int argc, char** argv)
 {
-    disp::Init();
-    disp::Window window("Simulation", 1280, 1280);
+    phys::Init();
+    phys::Window window("Simulation", 1280, 1280);
     phys::Space space;
     phys::window = &window;
     phys::space = &space;
-    win::Thread phys_thread(phys::physics, "Physics Thread", NULL);
-    win::Thread disp_thread(phys::display, "Display Thread", NULL);
+    phys::Thread phys_thread(phys::physics, "Physics Thread", NULL);
+    phys::Thread disp_thread(phys::display, "Display Thread", NULL);
     while(!window.Should_Quit())
     {
         window.Poll_Events();
