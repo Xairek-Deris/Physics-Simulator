@@ -41,5 +41,13 @@ void phys::Space::Update(double time)
         	Particle::Collide(*i, *j);
     	}
     for(auto& i : particles)
+	{
+		for(auto& j : obstacles)
+		{
+			Particle::Electrify(i, j);
+			Particle::Gravitate(i, j);
+        	Particle::Collide(i, j);
+		}
         i.Update(time);
+	}
 }

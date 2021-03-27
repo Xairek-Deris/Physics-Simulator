@@ -14,5 +14,6 @@ namespace phys
         void Update(double time);
 
         std::vector<Particle> particles;
+        std::vector<Particle> obstacles;
     };
 }

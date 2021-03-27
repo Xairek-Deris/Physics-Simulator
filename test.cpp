@@ -19,6 +19,7 @@ phys::Space* g_space;
 disp::Renderer* g_renderer;
 disp::Window* g_window;
 disp::Texture* g_texture;
+double ratio = .00004;
 
 int physics(void*)
 {
@@ -46,7 +47,11 @@ int display(void*)
         g_renderer->Clear();
         for(auto& i : g_space->particles)
         {
-            g_texture->Draw((i.position.x - i.radius) * 100, g_window->Height() - (i.position.y + i.radius) * 100, i.radius * 2 * 100, i.radius * 2 * 100);
+            g_texture->Draw((i.position.x - i.radius) * ratio, g_window->Height() - (i.position.y + i.radius) * ratio, i.radius * 2 * ratio, i.radius * 2 * ratio);
+        }
+        for(auto& i : g_space->obstacles)
+        {
+            g_texture->Draw((i.position.x - i.radius) * ratio, g_window->Height() - (i.position.y + i.radius) * ratio, i.radius * 2 * ratio, i.radius * 2 * ratio);
         }
         g_renderer->Update();
         dframes++;
@@ -65,9 +70,11 @@ int main(int argc, char** argv)
     g_renderer = &renderer;
     g_texture = &texture;
     g_space = &space;
-    space.particles.push_back(phys::Particle(phys::Vector{0,10,0}, phys::Vector{1,0,0}, 10, 0, 1, 1));
-    space.particles.push_back(phys::Particle(phys::Vector{10,9,0}, phys::Vector{0,0,0}, 10, 0, 1, 1));
-    space.particles.push_back(phys::Particle(phys::Vector{5, -6360000, 0}, phys::Vector{0,0,0}, 5.97e24, 0, 6360000, 1));
+    space.particles.push_back(phys::Particle(phys::Vector{10000000,16460000,0}, phys::Vector{0,11000,0}, 10, 0, 100000, 1));
+    //space.particles.push_back(phys::Particle(phys::Vector{10,9,2}, phys::Vector{0,0,0}, 10, -0.001, 1, 1));
+    space.obstacles.push_back(phys::Particle(phys::Vector{10000000, 10000000, 0}, phys::Vector{0,0,0}, 5.97e24, 0, 6360000, 1));
+    //space.obstacles.push_back(phys::Particle(phys::Vector{-6360000, 6, 0}, phys::Vector{0,0,0}, 0, 0, 6360000, 1));
+    //space.obstacles.push_back(phys::Particle(phys::Vector{6360012.80, 6, 0}, phys::Vector{0,0,0}, 0, 0, 6360000, 1));
     win::Thread phys_thread(physics, "Physics Thread", NULL);
     win::Thread disp_thread(display, "Display Thread", NULL);
     while(!window.Should_Quit())
