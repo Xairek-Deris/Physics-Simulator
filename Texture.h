@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL.h>
 
-namespace disp
+namespace phys
 {
     class Renderer;
 

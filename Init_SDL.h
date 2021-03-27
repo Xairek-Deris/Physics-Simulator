@@ -2,7 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-namespace disp
+namespace phys
 {
     int Init()
 {

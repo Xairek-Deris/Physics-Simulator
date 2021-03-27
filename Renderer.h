@@ -4,10 +4,8 @@
 
 #include "Window.h"
 
-namespace disp
+namespace phys
 {
-
-    
     class Renderer
     {
     public:

@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL_thread.h>
 
-namespace win
+namespace phys
 {
     class Thread
     {

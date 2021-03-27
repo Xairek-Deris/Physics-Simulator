@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL.h>
 
-void disp::Window::Poll_Events()
+void phys::Window::Poll_Events()
 {
     SDL_Event event;
     while(SDL_PollEvent(&event) != 0)
