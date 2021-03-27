@@ -19,7 +19,7 @@ phys::Space* g_space;
 disp::Renderer* g_renderer;
 disp::Window* g_window;
 disp::Texture* g_texture;
-double ratio = .00004;
+double ratio = 100;
 
 int physics(void*)
 {
@@ -70,11 +70,11 @@ int main(int argc, char** argv)
     g_renderer = &renderer;
     g_texture = &texture;
     g_space = &space;
-    space.particles.push_back(phys::Particle(phys::Vector{10000000,16460000,0}, phys::Vector{0,11000,0}, 10, 0, 100000, 1));
-    //space.particles.push_back(phys::Particle(phys::Vector{10,9,2}, phys::Vector{0,0,0}, 10, -0.001, 1, 1));
-    space.obstacles.push_back(phys::Particle(phys::Vector{10000000, 10000000, 0}, phys::Vector{0,0,0}, 5.97e24, 0, 6360000, 1));
-    //space.obstacles.push_back(phys::Particle(phys::Vector{-6360000, 6, 0}, phys::Vector{0,0,0}, 0, 0, 6360000, 1));
-    //space.obstacles.push_back(phys::Particle(phys::Vector{6360012.80, 6, 0}, phys::Vector{0,0,0}, 0, 0, 6360000, 1));
+    space.particles.push_back(phys::Particle(phys::Vector{1,10,0}, phys::Vector{1,0,0}, 10, 0.001, 1, 1));
+    space.particles.push_back(phys::Particle(phys::Vector{10,9,2}, phys::Vector{0,0,0}, 10, -0.001, 1, 1));
+    space.obstacles.push_back(phys::Particle(phys::Vector{6, -6360000, 0}, phys::Vector{0,0,0}, 5.97e24, 0, 6360000, 1));
+    space.obstacles.push_back(phys::Particle(phys::Vector{-6360000, 6, 0}, phys::Vector{0,0,0}, 0, 0, 6360000, 1));
+    space.obstacles.push_back(phys::Particle(phys::Vector{6360012.80, 6, 0}, phys::Vector{0,0,0}, 0, 0, 6360000, 1));
     win::Thread phys_thread(physics, "Physics Thread", NULL);
     win::Thread disp_thread(display, "Display Thread", NULL);
     while(!window.Should_Quit())
