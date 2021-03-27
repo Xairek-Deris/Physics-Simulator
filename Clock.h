@@ -2,9 +2,9 @@
 
 #include <chrono>
 
-namespace time
+namespace tick
 {
-class Clock
+    class Clock
     {
     public:
         Clock()
