@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 
 #include "Window.h"
 #include "Texture.h"
@@ -18,7 +19,7 @@ namespace phys
     bool pause = false;
     phys::Space* space;
     phys::Window* window;
-    double ratio = 100;
+    double zoom = 100;
     phys::Vector camera = phys::Vector{0,0,0};
 
     int physics(void*)
@@ -49,16 +50,16 @@ namespace phys
             renderer.Clear();
             for(auto& i : space->particles)
             {
-                int x = (i.position.x - camera.x - i.radius) * ratio + window->Width() / 2;
-                int y = window->Height() / 2 - (i.position.y - camera.y + i.radius) * ratio;
-                int rad = i.radius * 2 * ratio;
+                int x = (i.position.x - camera.x - i.radius) * zoom + window->Width() / 2;
+                int y = window->Height() / 2 - (i.position.y - camera.y + i.radius) * zoom;
+                int rad = i.radius * 2 * zoom;
                 texture.Draw(x, y, rad, rad);
             }
             for(auto& i : space->obstacles)
             {
-                int x = (i.position.x - camera.x - i.radius) * ratio + window->Width() / 2;
-                int y = window->Height() / 2 - (i.position.y - camera.y + i.radius) * ratio;
-                int rad = i.radius * 2 * ratio;
+                int x = (i.position.x - camera.x - i.radius) * zoom + window->Width() / 2;
+                int y = window->Height() / 2 - (i.position.y - camera.y + i.radius) * zoom;
+                int rad = i.radius * 2 * zoom;
                 texture.Draw(x, y, rad, rad);
             }
             renderer.Update();
@@ -66,6 +67,33 @@ namespace phys
         }
         return 0;
     }
+
+    enum class cmd
+    {
+        INVALID,
+        LOAD_SPACE,
+        SAVE_SPACE,
+        NEW,
+        DELETE,
+        EDIT,
+        CAMERA,
+        ZOOM,
+        QUIT,
+        HELP
+    };
+
+    std::unordered_map<std::string, cmd> cmd_map 
+    {
+        {"load", cmd::LOAD_SPACE},
+        {"save", cmd::SAVE_SPACE},
+        {"new", cmd::NEW},
+        {"delete", cmd::DELETE}, 
+        {"edit", cmd::EDIT},
+        {"camera", cmd::CAMERA},
+        {"zoom", cmd::ZOOM},
+        {"quit", cmd::QUIT},
+        {"help", cmd::HELP}
+    };
 }
 
 int main(int argc, char** argv)
@@ -80,6 +108,7 @@ int main(int argc, char** argv)
     while(!window.Should_Quit())
     {
         window.Poll_Events();
+
     }
     phys::pause = true;
     phys_thread.Wait();
