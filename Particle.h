@@ -6,7 +6,7 @@ namespace phys
 {
 	struct Particle
 	{
-		Particle(const Vector& pos, const Vector& vel, double mas, double cha, double rad, double har, int tex)
+		Particle(const Vector& pos, const Vector& vel, double mas, double cha, double rad, double har, unsigned tex)
 			: position{ pos }, velocity{ vel }, acceleration{ Vector{ 0,0,0 } }, net_force{ Vector{ 0,0,0 } }, mass{mas}, charge{ cha }, radius{ rad }, hardness{ har }, texture{ tex } {}
 
 		Vector position;
@@ -17,7 +17,7 @@ namespace phys
 		double charge;
 		double radius;
 		double hardness;
-		int texture;
+		unsigned texture;
 
 		static void Electrify(Particle& p1, Particle& p2);
 		static void Gravitate(Particle& p1, Particle& p2);
