@@ -1,7 +1,5 @@
 #include "Particle.h"
 
-#include <vector>
-
 #include "Vec.h"
 
 void phys::Particle::Electrify(phys::Particle& p1, phys::Particle& p2)
