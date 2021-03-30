@@ -8,13 +8,13 @@ namespace phys
 {
 	struct Particle
 	{
-		Particle(const phys::Vector& pos, const phys::Vector& vel, double mas, double cha, double rad, double har)
-			: position{ pos }, velocity{ vel }, acceleration{ phys::Vector{ 0,0,0 } }, net_force{ phys::Vector{ 0,0,0 } }, mass{mas}, charge{ cha }, radius{ rad }, hardness{ har } {}
+		Particle(const Vector& pos, const Vector& vel, double mas, double cha, double rad, double har)
+			: position{ pos }, velocity{ vel }, acceleration{ Vector{ 0,0,0 } }, net_force{ Vector{ 0,0,0 } }, mass{mas}, charge{ cha }, radius{ rad }, hardness{ har } {}
 
-		phys::Vector position;
-		phys::Vector velocity;
-		phys::Vector acceleration;
-		phys::Vector net_force;
+		Vector position;
+		Vector velocity;
+		Vector acceleration;
+		Vector net_force;
 		double mass;
 		double charge;
 		double radius;
