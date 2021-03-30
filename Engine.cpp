@@ -5,6 +5,8 @@
 #include "Clock.h"
 #include "Space.h"
 
+namespace phys{ extern long long pframes; }
+
 void phys::Engine::Start()
 {
     m_stop = false;

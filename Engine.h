@@ -6,13 +6,10 @@
 
 namespace phys
 {
-    extern long long pframes;
-
     class Engine
     {
     public:
         Engine(Space* space) : m_stop{ false }, m_pause{ false }, m_thread{ NULL}, m_space{ space } {}
-        ~Engine() { Stop(); }
 
         void Start();
         void Stop();
