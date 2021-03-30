@@ -25,12 +25,12 @@ namespace phys
         int Width() const { return m_width; }
         bool Should_Quit() { return m_quit; }
         void Quit() { m_quit = true; }
+        SDL_Window* Get_Window() { return m_window; }
 
     private:
         int m_width;
         int m_height;
         bool m_quit;
         SDL_Window* m_window;
-        friend class Renderer;
     };
 }
