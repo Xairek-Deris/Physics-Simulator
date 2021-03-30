@@ -1,3 +1,7 @@
+#pragma once
+
+#include <SDL2/SDL_thread.h>
+
 #include "Space.h"
 
 namespace phys
@@ -20,6 +24,6 @@ namespace phys
         bool m_pause;
         SDL_Thread* m_thread;
         Space* m_space;
-        friend int function(void* engine);
+        static int Function(void* engine);
     };
 }

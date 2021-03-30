@@ -1,6 +1,6 @@
 #include "Engine.h"
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_thread.h>
 
 #include "Clock.h"
 #include "Space.h"
@@ -9,7 +9,7 @@ void phys::Engine::Start()
 {
     m_stop = false;
     m_pause = false;
-    m_thread = SDL_CreateThread(function, "Phys Engine", (void*)this);
+    m_thread = SDL_CreateThread(Function, "Phys Engine", (void*)this);
 }
 
 void phys::Engine::Stop()
@@ -20,7 +20,7 @@ void phys::Engine::Stop()
     SDL_WaitThread(m_thread, &ret);
 }
 
-static int phys::function(void* engine)
+int phys::Engine::Function(void* engine)
 {
     Clock clock;
     #define ENGINE ((Engine*)engine)
@@ -32,7 +32,7 @@ static int phys::function(void* engine)
             while(!ENGINE->m_pause)
             {
                 ENGINE->m_space->Update(clock.Lap());
-                pframes++;
+                phys::pframes++;
             }
             clock.Stop();
         }
