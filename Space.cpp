@@ -17,6 +17,7 @@ int phys::Space::Load(const std::string& filename)
 	if(size > particles.capacity())
 		particles.reserve(size + 5);
 	fread(particles.data(), sizeof(Particle), size, file);
+	fclose(file);
 	return 0;
 }
 
@@ -28,6 +29,7 @@ int phys::Space::Save(const std::string& filename)
 	int size = particles.size();
 	fwrite(&size, sizeof(size), 1, file);
 	fwrite(particles.data(), sizeof(Particle), size, file);
+	fclose(file);
 	return 0;
 }
 
