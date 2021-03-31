@@ -1,12 +1,14 @@
 #pragma once
 
 #include <string>
+#include <utility>
+#include <vector>
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_thread.h>
 
+#include "Camera.h"
+#include "Particle.h"
 #include "Space.h"
-#include "Vec.h"
 #include "Window.h"
 
 namespace phys
@@ -14,21 +16,22 @@ namespace phys
     class Display
     {
     public:
-        Display(Window& window, const Space& space, const std::string& texture_filename);
+        Display(Window& window)
+        : m_window{ &window }
+        {
+            m_renderer = SDL_CreateRenderer(window.m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+            SDL_SetRenderDrawColor(m_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        }
 
-        void Start();
-        void Stop();
-        void Set_Camera(Vector& position) { m_camera = position; }
-        void Set_Zoom(double zoom) { m_zoom = zoom; }
+        std::vector<std::pair<SDL_Texture*, std::string>> textures;
 
+        int New_Texture(const std::string& filename);
+        void Delete_Texture(int index) { textures[index].second = ""; SDL_DestroyTexture(textures[index].first); }
+        void Clear() { SDL_RenderClear(m_renderer); }
+        void Update() { SDL_RenderPresent(m_renderer); }
+        void Draw_Particles(const std::vector<Particle>& particles, const Camera& camera);
     private:
-        SDL_Surface* m_surface;
-        SDL_Thread* m_thread;
         Window* m_window;
-        const Space* m_space;
-        Vector m_camera;
-        double m_zoom;
-        bool m_stop;
-        static int Function(void* display);
+        SDL_Renderer* m_renderer;
     };
 }

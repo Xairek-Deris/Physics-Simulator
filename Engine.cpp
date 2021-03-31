@@ -1,5 +1,7 @@
 #include "Engine.h"
 
+#include <vector>
+
 #include <SDL2/SDL_thread.h>
 
 #include "Clock.h"
