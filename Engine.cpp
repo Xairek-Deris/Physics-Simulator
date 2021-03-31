@@ -35,7 +35,7 @@ int phys::Engine::Function(void* engine)
             clock.Resume();
             while(!ENGINE->m_pause)
             {
-                ENGINE->m_space->Update(clock.Lap());
+                ENGINE->m_space->Update(clock.Lap() * ENGINE->m_reverse);
                 phys::pframes++;
             }
             clock.Stop();
