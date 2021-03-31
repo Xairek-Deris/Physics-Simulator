@@ -59,8 +59,8 @@ int main(int argc, char** argv)
     }
 
     phys::Window window("Simulation", 1280, 1280);
-    phys::Display display(window);
     phys::Space space;
+    phys::Display display(window, space);
     phys::Engine engine(space);
     space.particles.push_back(phys::Particle{ phys::Vector{ 0,0,0 }, phys::Vector{ 1,0,0}, 10, 1, 1, 1, 0});
     space.cameras.push_back( phys::Camera(phys::Vector{0, 0, 0}, phys::Vector{ 0, 1, 0 }, 100) );
@@ -70,7 +70,7 @@ int main(int argc, char** argv)
     {
         window.Poll_Events();
         display.Clear();
-        display.Draw_Particles(space.particles, space.cameras[0]);
+        display.Draw_Space(0);
         display.Update();
         phys::dframes++;
     }
