@@ -16,11 +16,8 @@ namespace phys
             m_keystates = SDL_GetKeyboardState( NULL );
             m_mouse_state = SDL_GetMouseState(&m_mouse_x, &m_mouse_y);
         }
-        ~Window()
-        {
-            SDL_DestroyWindow(m_window);
-        }
 
+        void Free(){ SDL_DestroyWindow(m_window); }
         int Poll_Event();
         int Width() const { return m_width; }
         int Height() const { return m_height; }
@@ -28,7 +25,7 @@ namespace phys
         int Mouse_Y() const { return m_mouse_y; }
         bool Button_Is_Pressed(int scancode) { return m_keystates[scancode]; }
         bool MB_Is_Pressed(int button) { return m_mouse_state & SDL_BUTTON(button); }
-        const SDL_Event* Event() { return &m_event; }
+        const SDL_Event& Event() { return m_event; }
         SDL_Window* Get_Window() { return m_window; }
 
     private:

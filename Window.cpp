@@ -18,7 +18,7 @@ int phys::Window::Poll_Event()
         {
             m_mouse_state = SDL_GetMouseState(&m_mouse_x, &m_mouse_y);
         }
-        return m_event.type;
+        return 1;
     }
     return 0;
 }
