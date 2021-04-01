@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
-#include <unordered_map>
+
+#include <stdio.h>
 
 #include <SDL2/SDL.h>
 
@@ -10,44 +11,14 @@
 #include "Vec.h"
 #include "Space.h"
 #include "Engine.h"
-#include "Display.h"
 #include "Camera.h"
+#include "Renderer.h"
+#include "Texture.h"
 
 namespace phys
 {
     long long dframes = 0;
     long long pframes = 0;
-
-    enum class cmd
-    {
-        INVALID,
-        PAUSE,
-        UNPAUSE,
-        LOAD_SPACE,
-        SAVE_SPACE,
-        NEW,
-        DELETE,
-        EDIT,
-        CAMERA,
-        ZOOM,
-        QUIT,
-        HELP
-    };
-
-    std::unordered_map<std::string, cmd> cmd_map 
-    {
-        {"load", cmd::LOAD_SPACE},
-        {"save", cmd::SAVE_SPACE},
-        {"pause", cmd::PAUSE},
-        {"unpause", cmd::UNPAUSE},
-        {"new", cmd::NEW},
-        {"delete", cmd::DELETE}, 
-        {"edit", cmd::EDIT},
-        {"camera", cmd::CAMERA},
-        {"zoom", cmd::ZOOM},
-        {"quit", cmd::QUIT},
-        {"help", cmd::HELP}
-    };
 }
 
 int main(int argc, char** argv)
@@ -60,18 +31,44 @@ int main(int argc, char** argv)
 
     phys::Window window("Simulation", 1280, 1280);
     phys::Space space;
-    phys::Display display(window, space);
     phys::Engine engine(space);
-    space.particles.push_back(phys::Particle{ phys::Vector{ 0,0,0 }, phys::Vector{ 1,0,0}, 10, 1, 1, 1, 0});
-    space.cameras.push_back( phys::Camera(phys::Vector{0, 0, 0}, phys::Vector{ 0, 1, 0 }, 100) );
-    display.New_Texture("ball.bmp");
+    phys::Renderer renderer(window);
+    std::vector<phys::Texture> textures;
+    textures.push_back(phys::Texture("ball.bmp", renderer));
+    space.particles.push_back(phys::Particle{ phys::Vector{ 0, 0, 0 }, phys::Vector{ 0, 0, 0 }, 10, 0, 1, .1, 0});
+    space.cameras.push_back( phys::Camera(phys::Vector{ 0, 0, 0 }, phys::Vector{ 0, 0, 0 }, 100) );
     engine.Start();
-    while(!window.Should_Quit())
+    bool quit = false;
+    int active_cam = 0;
+    while(!quit)
     {
-        window.Poll_Events();
-        display.Clear();
-        display.Draw_Space(0);
-        display.Update();
+        //Event Handling
+        while(window.Poll_Event() != 0)
+        {
+            if(window.Event().type == SDL_QUIT)
+                quit = true;
+        }
+        //Drawing Area
+        renderer.Clear();
+        SDL_Rect rect {0, 0, 100, 100};
+        phys::Camera* camera = &space.cameras[active_cam];
+        for(auto& i : space.particles)
+        {
+            rect.x = (i.position.x - camera->position.x - i.radius) * camera->zoom + window.Width() / 2;
+            rect.y = window.Height() / 2 - (i.position.y - camera->position.y + i.radius) * camera->zoom;
+            rect.w = i.radius * 2 * camera->zoom;
+            rect.h = i.radius * 2 * camera->zoom;
+            textures[i.texture].Draw(rect);
+        }
+        for(auto& i : space.obstacles)
+        {
+            rect.x = (i.position.x - camera->position.x - i.radius) * camera->zoom + window.Width() / 2;
+            rect.y = window.Height() / 2 - (i.position.y - camera->position.y + i.radius) * camera->zoom;
+            rect.w = i.radius * 2 * camera->zoom;
+            rect.h = i.radius * 2 * camera->zoom;
+            textures[i.texture].Draw(rect);
+        }
+        renderer.Display();
         phys::dframes++;
     }
     engine.Stop();
