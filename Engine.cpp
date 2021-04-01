@@ -20,8 +20,7 @@ void phys::Engine::Stop()
 {
     m_pause = true;
     m_stop = true;
-    int ret;
-    SDL_WaitThread(m_thread, &ret);
+    SDL_WaitThread(m_thread, NULL);
 }
 
 int phys::Engine::Function(void* engine)
