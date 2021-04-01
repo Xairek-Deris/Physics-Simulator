@@ -1,25 +1,24 @@
 #include "Window.h"
 
-#include <iostream>
-
 #include <SDL2/SDL.h>
 
-void phys::Window::Poll_Events()
+int phys::Window::Poll_Event()
 {
-    SDL_Event event;
-    while(SDL_PollEvent(&event) != 0)
+    if(SDL_PollEvent(&m_event) != 0)
     {
-    if(event.type == SDL_QUIT)
+        if (m_event.type == SDL_WINDOWEVENT)
         {
-            m_quit = true;
-        }
-        else if ( event.type == SDL_WINDOWEVENT )
-        {
-            if(event.window.event == SDL_WINDOWEVENT_RESIZED)
+            if(m_event.window.event == SDL_WINDOWEVENT_RESIZED)
             {
-                m_width = event.window.data1;
-                m_height = event.window.data2;
+                m_width = m_event.window.data1;
+                m_height = m_event.window.data2;
             }
         }
+        else if(m_event.type == SDL_MOUSEMOTION || m_event.type == SDL_MOUSEBUTTONDOWN || m_event.type == SDL_MOUSEBUTTONUP)
+        {
+            m_mouse_state = SDL_GetMouseState(&m_mouse_x, &m_mouse_y);
+        }
+        return m_event.type;
     }
+    return 0;
 }
