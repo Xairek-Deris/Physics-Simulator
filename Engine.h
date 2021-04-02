@@ -11,7 +11,8 @@ namespace phys
     class Engine
     {
     public:
-        Engine(Space& space) : m_stop{ false }, m_pause{ false }, m_reverse{ 1 }, m_thread{ NULL}, m_space{ &space } {}
+        Engine(std::vector<Particle>& particles, std::vector<Particle>& obstacles, std::vector<Camera>& cameras) 
+        : m_stop{ false }, m_pause{ false }, m_reverse{ 1 }, m_thread{ NULL}, m_particles{ &particles }, m_obstacles{ &obstacles}, m_cameras{ &cameras } {}
 
         void Start();
         void Stop();
@@ -25,7 +26,9 @@ namespace phys
         bool m_pause;
         int m_reverse;
         SDL_Thread* m_thread;
-        Space* m_space;
+        std::vector<Particle>* m_particles;
+        std::vector<Particle>* m_obstacles;
+        std::vector<Camera>* m_cameras;
         static int Function(void* engine);
     };
 }

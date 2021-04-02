@@ -20,10 +20,8 @@ namespace phys
 		double radius;
 		double hardness;
 		int texture;
-
-		static void Electrify(Particle& p1, Particle& p2);
-		static void Gravitate(Particle& p1, Particle& p2);
-		static void Collide(Particle& p1, Particle& p2);
+		
+		static void Interact(Particle& p1, Particle& p2);
 		void Update(double time)
 		{
 			acceleration = net_force / mass;
