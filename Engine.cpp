@@ -12,21 +12,21 @@ namespace phys{ extern long long pframes; }
 
 void phys::Engine::Start()
 {
-    m_stop = false;
-    m_pause = false;
+    stop = false;
+    pause = false;
     m_thread = SDL_CreateThread(Function, "Phys Engine", (void*)this);
 }
 
 void phys::Engine::Stop()
 {
-    m_pause = true;
-    m_stop = true;
+    pause = true;
+    stop = true;
     SDL_WaitThread(m_thread, NULL);
 }
 
 void phys::Engine::Step(double time)
 {
-    time *= m_reverse;
+    time *= speed;
     for(auto i = m_particles->begin(); i < m_particles->end(); i++)
     {
         for(auto j = i + 1; j != m_particles->end(); j++)
@@ -52,14 +52,14 @@ int phys::Engine::Function(void* engine)
 {
     Clock clock;
     #define ENGINE ((Engine*)engine)
-    while(!ENGINE->m_stop)
+    while(!ENGINE->stop)
     {
-        if(!ENGINE->m_pause)
+        if(!ENGINE->pause)
         {
             clock.Resume();
-            while(!ENGINE->m_pause)
+            while(!ENGINE->pause)
             {
-                double time = clock.Lap() * ENGINE->m_reverse;
+                double time = clock.Lap() * ENGINE->speed;
                 for(auto i = ENGINE->m_particles->begin(); i < ENGINE->m_particles->end(); i++)
                 {
     	            for(auto j = i + 1; j != ENGINE->m_particles->end(); j++)

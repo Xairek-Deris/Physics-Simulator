@@ -38,10 +38,9 @@ int main(int argc, char** argv)
     std::vector<phys::Camera> cameras;
     phys::Engine engine(particles, obstacles, cameras);
 
-    particles.push_back({ { -5, 0, 0 }, { 0, 0, 0 }, 10, .001, 1, .1, 0});
-    particles.push_back({ { 5, 0, 0 }, { 0, 0, 0 }, 10, -.001, 1, .1, 0});
+    particles.push_back({ { -5, 0, 0 }, { 0, 4, 0 }, 10, .001, 1, .1, 0});
+    particles.push_back({ { 5, 0, 0 }, { 0, -4, 0 }, 10, -.001, 1, .1, 0});
     cameras.push_back( phys::Camera({ 0, 0, 0 }, { 0, 0, 0 }, 100) );
-
     engine.Start();
     int active_cam = 0;
     while(!window.Should_Quit())
@@ -52,7 +51,8 @@ int main(int argc, char** argv)
             switch(window.Event().type)
             {
             case SDL_KEYDOWN:
-
+                if(window.Event().key.keysym.scancode == SDL_SCANCODE_SPACE)
+                    engine.speed *= -1;
                 break;
             
             case SDL_KEYUP:
