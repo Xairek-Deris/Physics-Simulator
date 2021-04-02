@@ -24,6 +24,30 @@ void phys::Engine::Stop()
     SDL_WaitThread(m_thread, NULL);
 }
 
+void phys::Engine::Step(double time)
+{
+    time *= m_reverse;
+    for(auto i = m_particles->begin(); i < m_particles->end(); i++)
+    {
+        for(auto j = i + 1; j != m_particles->end(); j++)
+    	{
+            Particle::Interact(*i, *j);
+    	}
+    }
+    for(auto& i : *m_particles)
+	{
+		for(auto& j : *m_obstacles)
+		{
+            Particle::Interact(i, j);
+		}
+        i.Update(time);
+	}
+	for(auto& i : *m_cameras)
+    {
+		i.Update(time);
+    }
+}
+
 int phys::Engine::Function(void* engine)
 {
     Clock clock;

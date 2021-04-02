@@ -17,6 +17,7 @@ namespace phys
 
         void Start();
         void Stop();
+        void Step(double time);
         void Pause() { m_pause = true; }
         void Unpause() { m_pause = false; }
         void Reverse() { m_reverse = -1; }
