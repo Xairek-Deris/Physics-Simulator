@@ -5,7 +5,8 @@
 #include <SDL2/SDL_thread.h>
 
 #include "Clock.h"
-#include "Space.h"
+#include "Particle.h"
+#include "Vec.h"
 
 namespace phys{ extern long long pframes; }
 

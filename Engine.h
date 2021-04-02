@@ -4,7 +4,8 @@
 
 #include <SDL2/SDL_thread.h>
 
-#include "Space.h"
+#include "Particle.h"
+#include "Camera.h"
 
 namespace phys
 {
