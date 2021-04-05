@@ -38,9 +38,12 @@ int main(int argc, char** argv)
     std::vector<phys::Camera> cameras;
     phys::Engine engine(particles, obstacles, cameras);
 
-    particles.push_back({ { -5, 0, 0 }, { 0, 4, 0 }, 10, .001, 1, .1, 0});
-    particles.push_back({ { 5, 0, 0 }, { 0, -4, 0 }, 10, -.001, 1, .1, 0});
-    cameras.push_back( phys::Camera({ 0, 0, 0 }, { 0, 0, 0 }, 100) );
+    particles.push_back({ { -5, 0, 0 }, { .1, 0, 0 }, 9, -.001, 1, .1, 0});
+    particles.push_back({ { 5, 0, 0 }, { -1, 0, 0 }, 10, 0.001, 1, .1, 0});
+    particles.push_back({ { 0, -5, 0 }, { 0, 1, 0 }, 6, 0.001, 1, .1, 0});
+    particles.push_back({ { 0, 5, 0 }, { 0, -1, 0 }, 20, -.001, 1, .1, 0});
+    cameras.push_back( phys::Camera({ 0, 0, 0 }, { 0, 0, 0 }, 10) );
+    engine.speed = 1;
     engine.Start();
     int active_cam = 0;
     while(!window.Should_Quit())
@@ -52,6 +55,10 @@ int main(int argc, char** argv)
             {
             case SDL_KEYDOWN:
                 if(window.Event().key.keysym.scancode == SDL_SCANCODE_SPACE)
+                    if(engine.pause)
+                        engine.pause = false;
+                    else engine.pause = true;
+                else if(window.Event().key.keysym.scancode == SDL_SCANCODE_E)
                     engine.speed *= -1;
                 break;
             
