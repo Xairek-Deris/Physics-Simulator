@@ -35,7 +35,7 @@ namespace phys
 
         ~Texture() { if(--m_ref_count == 0) SDL_DestroyTexture(m_texture); }
         
-        void Draw(const SDL_Rect& rect)
+        void Draw(const SDL_Rect& rect) const
         {
             SDL_RenderCopy(m_renderer->Get_Renderer(), m_texture, NULL, &rect);
         }
