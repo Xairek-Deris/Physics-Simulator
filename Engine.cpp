@@ -51,31 +51,31 @@ void phys::Engine::Step(double time)
 int phys::Engine::Function(void* engine)
 {
     Clock clock;
-    #define ENGINE ((Engine*)engine)
-    while(!ENGINE->stop)
+    #define ENGINE (*(Engine*)engine)
+    while(!ENGINE.stop)
     {
-        if(!ENGINE->pause)
+        if(!ENGINE.pause)
         {
             clock.Resume();
-            while(!ENGINE->pause)
+            while(!ENGINE.pause)
             {
-                double time = clock.Lap() * ENGINE->speed;
-                for(auto i = ENGINE->m_particles->begin(); i < ENGINE->m_particles->end(); i++)
+                double time = clock.Lap() * ENGINE.speed;
+                for(auto i = ENGINE.m_particles->begin(); i < ENGINE.m_particles->end(); i++)
                 {
-    	            for(auto j = i + 1; j != ENGINE->m_particles->end(); j++)
+    	            for(auto j = i + 1; j != ENGINE.m_particles->end(); j++)
     	            {
                         Particle::Interact(*i, *j);
     	            }
                 }
-                for(auto& i : *ENGINE->m_particles)
+                for(auto& i : *ENGINE.m_particles)
 	            {
-		            for(auto& j : *ENGINE->m_obstacles)
+		            for(auto& j : *ENGINE.m_obstacles)
 		            {
                         Particle::Interact(i, j);
 		            }
                     i.Update(time);
 	            }
-	            for(auto& i : *ENGINE->m_cameras)
+	            for(auto& i : *ENGINE.m_cameras)
                 {
 		            i.Update(time);
                 }
