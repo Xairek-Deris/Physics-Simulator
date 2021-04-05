@@ -21,6 +21,18 @@ namespace phys
             m_ref_count++;
         }
 
+        Texture(const Texture& texture)
+        : m_texture{ texture.m_texture }, m_renderer{ texture.m_renderer }, m_filename{ texture.m_filename }
+        {
+            m_ref_count++;
+        }
+
+        Texture(const Texture&& texture)
+        : m_texture{ texture.m_texture }, m_renderer{ texture.m_renderer }, m_filename{ texture.m_filename }
+        {
+            m_ref_count++;
+        }
+
         ~Texture() { if(--m_ref_count == 0) SDL_DestroyTexture(m_texture); }
         
         void Draw(const SDL_Rect& rect)
@@ -34,6 +46,6 @@ namespace phys
         SDL_Texture* m_texture;
         Renderer* m_renderer;
         std::string m_filename;
-        static int m_ref_count;
+        inline static int m_ref_count;
     };
 }

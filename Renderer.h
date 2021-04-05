@@ -17,6 +17,18 @@ namespace phys
             m_ref_count++;
         }
 
+        Renderer(const Renderer& renderer)
+        : m_window{ renderer.m_window }, m_renderer{ renderer.m_renderer }
+        {
+            m_ref_count++;
+        }
+
+        Renderer(const Renderer&& renderer)
+        : m_window{ renderer.m_window }, m_renderer{ renderer.m_renderer }
+        {
+            m_ref_count++;
+        }
+
         ~Renderer() { if(--m_ref_count == 0) SDL_DestroyRenderer(m_renderer); }
         
         void Clear() { SDL_RenderClear(m_renderer); }
@@ -26,6 +38,6 @@ namespace phys
     private:
         Window* m_window;
         SDL_Renderer* m_renderer;
-        static int m_ref_count;
+        inline static int m_ref_count;
     };
 }

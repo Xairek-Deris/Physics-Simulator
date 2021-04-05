@@ -18,6 +18,20 @@ namespace phys
             m_ref_count++;
         }
 
+        Window(const Window& window)
+        : m_width{ window.m_width }, m_height{ window.m_height }, m_mouse_x{ window.m_mouse_x }, m_mouse_y{ window.m_mouse_y }, m_quit { false }, 
+            m_window{ window.m_window }, m_keystates{ window.m_keystates }, m_mouse_state{ window.m_mouse_state }, m_event{ window.m_event }
+        {
+            m_ref_count++;
+        }
+
+        Window(const Window&& window)
+        : m_width{ window.m_width }, m_height{ window.m_height }, m_mouse_x{ window.m_mouse_x }, m_mouse_y{ window.m_mouse_y }, m_quit { false }, 
+            m_window{ window.m_window }, m_keystates{ window.m_keystates }, m_mouse_state{ window.m_mouse_state }, m_event{ window.m_event }
+        {
+            m_ref_count++;
+        }
+
         ~Window() { if(--m_ref_count == 0) SDL_DestroyWindow(m_window); }
 
         int Poll_Event();
@@ -39,7 +53,7 @@ namespace phys
         const Uint8* m_keystates;
         Uint32 m_mouse_state;
         SDL_Event m_event;
-        static int m_ref_count;
+        inline static int m_ref_count;
         friend class Display;
     };
 }
