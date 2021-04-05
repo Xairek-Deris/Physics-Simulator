@@ -12,7 +12,7 @@ namespace phys{ extern long long pframes; }
 
 void phys::Engine::Start()
 {
-    stop = false;
+    m_stop = false;
     pause = false;
     m_thread = SDL_CreateThread(Function, "Phys Engine", (void*)this);
 }
@@ -20,7 +20,7 @@ void phys::Engine::Start()
 void phys::Engine::Stop()
 {
     pause = true;
-    stop = true;
+    m_stop = true;
     SDL_WaitThread(m_thread, NULL);
 }
 
@@ -52,7 +52,7 @@ int phys::Engine::Function(void* engine)
 {
     Clock clock;
     #define ENGINE (*(Engine*)engine)
-    while(!ENGINE.stop)
+    while(!ENGINE.m_stop)
     {
         if(!ENGINE.pause)
         {
