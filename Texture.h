@@ -18,9 +18,11 @@ namespace phys
 	        SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
             m_texture = SDL_CreateTextureFromSurface(m_renderer->Get_Renderer(), surface);
             SDL_FreeSurface(surface);
+            m_ref_count++;
         }
 
-        void Free() { SDL_DestroyTexture(m_texture); }
+        ~Texture() { if(--m_ref_count == 0) SDL_DestroyTexture(m_texture); }
+        
         void Draw(const SDL_Rect& rect)
         {
             SDL_RenderCopy(m_renderer->Get_Renderer(), m_texture, NULL, &rect);
@@ -32,5 +34,6 @@ namespace phys
         SDL_Texture* m_texture;
         Renderer* m_renderer;
         std::string m_filename;
+        static int m_ref_count;
     };
 }

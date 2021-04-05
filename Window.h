@@ -15,9 +15,11 @@ namespace phys
             m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
             m_keystates = SDL_GetKeyboardState( NULL );
             m_mouse_state = SDL_GetMouseState(&m_mouse_x, &m_mouse_y);
+            m_ref_count++;
         }
 
-        void Free(){ SDL_DestroyWindow(m_window); }
+        ~Window() { if(--m_ref_count == 0) SDL_DestroyWindow(m_window); }
+
         int Poll_Event();
         int Width() const { return m_width; }
         int Height() const { return m_height; }
@@ -37,6 +39,7 @@ namespace phys
         const Uint8* m_keystates;
         Uint32 m_mouse_state;
         SDL_Event m_event;
+        static int m_ref_count;
         friend class Display;
     };
 }
