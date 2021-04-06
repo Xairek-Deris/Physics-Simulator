@@ -11,7 +11,7 @@ namespace phys
         int x, y;
         int w, h;
         SDL_Rect Get_SDL_Rect() { return SDL_Rect{ x, y, w, h }; }
-        bool Contains(Point& point)
+        bool Contains(const Point& point)
         {
             if(point.x < x || point.y < y || point.x > x + w || point.x > y + h)
                 return false;
