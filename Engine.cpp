@@ -2,8 +2,6 @@
 
 #include <vector>
 
-#include <SDL2/SDL_thread.h>
-
 #include "Clock.h"
 #include "Particle.h"
 #include "Vec.h"
@@ -14,14 +12,14 @@ void phys::Engine::Start()
 {
     m_stop = false;
     pause = false;
-    m_thread = SDL_CreateThread(Function, "Phys Engine", (void*)this);
+    m_thread.Start(Function, (void*)this);
 }
 
 void phys::Engine::Stop()
 {
     pause = true;
     m_stop = true;
-    SDL_WaitThread(m_thread, NULL);
+    m_thread.Wait();
 }
 
 void phys::Engine::Step(double time)

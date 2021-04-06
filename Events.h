@@ -3,7 +3,7 @@
 #include <mutex>
 #include <queue>
 
-#include <SDL2/SDL_thread.h>
+#include "Thread.h"
 
 namespace phys
 {
@@ -16,7 +16,7 @@ namespace phys
     class Event_Loop
     {
     public:
-        Event_Loop() : m_stop{ false }, m_thread{ NULL } {}
+        Event_Loop() : m_stop{ false }, m_thread{ "Event Loop Thread" } {}
 
         ~Event_Loop() { if(!m_stop) Stop(); }
 
@@ -30,19 +30,19 @@ namespace phys
         void Start()
         {
             m_stop = false;
-            m_thread = SDL_CreateThread(Function, "Event Loop Thread", this);
+            m_thread.Start(Function, this);
         }
 
         void Stop() 
         { 
             m_stop = true;
-            SDL_WaitThread(m_thread, NULL);
+            m_thread.Wait();
         }
 
     private:
         std::queue<Event> m_events;
         std::mutex m_mutex;
-        SDL_Thread* m_thread;
+        phys::Thread m_thread;
         bool m_stop;
 
         static int Function(void* e_loop);
