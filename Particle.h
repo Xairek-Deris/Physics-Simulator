@@ -6,8 +6,8 @@ namespace phys
 {
 	struct Particle
 	{
-		Particle(const Vector& pos, const Vector& vel, double mas, double cha, double rad, double har, int tex = 0)
-			: position{ pos }, velocity{ vel }, acceleration{ Vector{ 0,0,0 } }, net_force{ Vector{ 0,0,0 } }, mass{mas}, charge{ cha }, radius{ rad }, hardness{ har }, texture{ tex } {}
+		Particle(const Vector& pos, const Vector& vel, double mas, double cha, double rad, double har)
+			: position{ pos }, velocity{ vel }, acceleration{ Vector{ 0,0,0 } }, net_force{ Vector{ 0,0,0 } }, mass{mas}, charge{ cha }, radius{ rad }, hardness{ har } {}
 		Particle() 
 			: position{ Vector{ 0, 0, 0 } }, velocity{ Vector{ 0, 0, 0 } }, acceleration{ Vector{ 0,0,0 } }, net_force{ Vector{ 0,0,0 } }, mass{ 0 }, charge{ 0 }, radius{ 0 }, hardness{ 0 } {}
 
@@ -19,7 +19,6 @@ namespace phys
 		double charge;
 		double radius;
 		double hardness;
-		int texture;
 		
 		static void Interact(Particle& p1, Particle& p2);
 		void Update(double time)

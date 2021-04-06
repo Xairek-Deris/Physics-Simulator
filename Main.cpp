@@ -5,6 +5,8 @@
 
 #include <SDL2/SDL.h>
 
+#include "Events.h"
+#include "Button.h"
 #include "Window.h"
 #include "Clock.h"
 #include "Particle.h"
@@ -18,6 +20,14 @@ namespace phys
 {
     long long dframes = 0;
     long long pframes = 0;
+
+    void Func(void* data)
+    {
+        #define ENG (*(phys::Engine*)(data))
+        if(ENG.pause)
+            ENG.pause = false;
+        else ENG.pause = true;
+    }
 }
 
 int main(int argc, char** argv)
@@ -30,22 +40,27 @@ int main(int argc, char** argv)
     phys::Window window("Simulation", 1280, 1280);
     phys::Renderer renderer(window);
     std::vector<phys::Texture> textures;
-
-    textures.push_back({"ball.bmp", renderer});
-
+    phys::Texture texture{"ball.bmp", renderer};
     std::vector<phys::Particle> particles;
     std::vector<phys::Particle> obstacles;
     std::vector<phys::Camera> cameras;
     phys::Engine engine(particles, obstacles, cameras);
 
-    particles.push_back({ { -5, 0, 0 }, { .1, 0, 0 }, 9, -.001, 1, .1, 0});
-    particles.push_back({ { 5, 0, 0 }, { -1, 0, 0 }, 10, 0.001, 1, .1, 0});
-    particles.push_back({ { 0, -5, 0 }, { 0, 1, 0 }, 6, 0.001, 1, .1, 0});
-    particles.push_back({ { 0, 5, 0 }, { 0, -1, 0 }, 20, -.001, 1, .1, 0});
+    //Manually add more particles here
+    particles.push_back({ { -5, 0, 0 }, { .1, 0, 0 }, 9, -.001, 1, .1});
+    particles.push_back({ { 5, 0, 0 }, { -1, 0, 0 }, 10, 0.001, 1, .1});
+    particles.push_back({ { 0, -5, 0 }, { 0, 1, 0 }, 6, 0.001, 1, .1});
+    particles.push_back({ { 0, 5, 0 }, { 0, -1, 0 }, 20, -.001, 1, .1});
+
+
+    //will support more cameras, hardcoding until then
     cameras.push_back( phys::Camera({ 0, 0, 0 }, { 0, 0, 0 }, 10) );
+    int active_cam = 0;
+
     engine.speed = 1;
     engine.Start();
-    int active_cam = 0;
+
+
     while(!window.Should_Quit())
     {
         //Event Handling
@@ -61,26 +76,6 @@ int main(int argc, char** argv)
                 else if(window.Event().key.keysym.scancode == SDL_SCANCODE_E)
                     engine.speed *= -1;
                 break;
-            
-            case SDL_KEYUP:
-
-                break;
-
-            case SDL_MOUSEMOTION:
-
-                break;
-
-            case SDL_MOUSEWHEEL:
-
-                break;
-
-            case SDL_MOUSEBUTTONDOWN:
-
-                break;
-
-            case SDL_MOUSEBUTTONUP:
-
-                break;
             }
         }
         //Drawing Area
@@ -93,7 +88,7 @@ int main(int argc, char** argv)
             rect.y = window.Height() / 2 - (i.position.y - camera->position.y + i.radius) * camera->zoom;
             rect.w = i.radius * 2 * camera->zoom;
             rect.h = i.radius * 2 * camera->zoom;
-            textures[i.texture].Draw(rect);
+            texture.Draw(rect);
         }
         for(auto& i : obstacles)
         {
@@ -101,7 +96,7 @@ int main(int argc, char** argv)
             rect.y = window.Height() / 2 - (i.position.y - camera->position.y + i.radius) * camera->zoom;
             rect.w = i.radius * 2 * camera->zoom;
             rect.h = i.radius * 2 * camera->zoom;
-            textures[i.texture].Draw(rect);
+            texture.Draw(rect);
         }
         renderer.Display();
         phys::dframes++;
