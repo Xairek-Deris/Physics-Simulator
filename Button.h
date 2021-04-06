@@ -17,7 +17,7 @@ namespace phys
 
         void Click() { m_event_loop->Push(m_on_click, m_data); }
         void MB1Down(Point point) { if(m_box.Contains(point)) m_pressed = true; }
-        void MB1UP(Point point) { if(m_pressed && m_box.Contains(point)) Click(); m_pressed = false; }
+        void MB1Up(Point point) { if(m_pressed && m_box.Contains(point)) Click(); m_pressed = false; }
         void Paint() 
         {
             if(m_shown)
