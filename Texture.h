@@ -4,6 +4,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "Box.h"
 #include "Renderer.h"
 
 namespace phys
@@ -35,9 +36,9 @@ namespace phys
 
         ~Texture() { if(--m_ref_count == 0) SDL_DestroyTexture(m_texture); }
         
-        void Draw(const SDL_Rect& rect) const
+        void Draw(const Box& box) const
         {
-            SDL_RenderCopy(m_renderer->Get_Renderer(), m_texture, NULL, &rect);
+            SDL_RenderCopy(m_renderer->Get_Renderer(), m_texture, NULL, box.Get_Rect());
         }
         SDL_Texture* Get_Texture() { return m_texture; }
         std::string Filename() { return m_filename; }
