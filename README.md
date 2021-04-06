@@ -8,9 +8,15 @@ I also wanted to test the limits of doing physics with rapid frame updates inste
 
 REQUIREMENTS:
 SDL runtime binaries and libraries are needed as I do not have the libraries included in the project files yet.
+Compile (using c++17 or later) Main.cpp Window.cpp Engine.cpp Particle.cpp
+as well as any SDL, depending on the location and format of the library.
 
 Currently only has hard-coded particles. You can add some more by using pushing back particles into the "particles" vector.
 Obstacles are just particles that never move. You create one by pushing a particle into the "obstacles" vector.
+
+CONTROLS:
+Spacebar pauses and unpauses the simulation
+E reverses the direction of time
 
 The program quickly becomes less accurate if your particles move too fast and/or there are too many particles. This is because 
 the physics is done on a separate thread without calculus in the calculations. This means that high update rates are required to
