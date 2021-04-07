@@ -3,7 +3,6 @@
 #include <SDL2/SDL.h>
 
 #include "Box.h"
-#include "Events.h"
 #include "Point.h"
 #include "Texture.h"
 
@@ -12,13 +11,13 @@ namespace phys
     class Button
     {
     public:
-        Button(const Texture& tex, const Box& box, Event_Loop& e_loop, void (*handler)(void*), void* data, bool shown, bool enabled)
-        : m_texture{ &tex }, m_box{ box }, m_event_loop{ &e_loop }, m_on_click{ handler }, m_data{ data }, m_pressed{ false }, m_shown{ shown }, m_enabled{ enabled } {}
+        Button(const Texture& tex, const Box& box, Event_Loop& e_loop, void (*handler)(void*), void* data)
+        : m_texture{ &tex }, m_box{ box }, m_event_loop{ &e_loop }, m_on_click{ handler }, m_data{ data }, m_pressed{ false }, m_shown{ true }, m_enabled{ true } {}
 
         void Click() { m_event_loop->Push(m_on_click, m_data); }
         void MB1Down(const Point& point) { if(m_enabled && m_box.Contains(point)) m_pressed = true; }
         void MB1Up(const Point& point) { if(m_pressed && m_box.Contains(point)) Click(); m_pressed = false; }
-        void Paint() { if(m_shown) m_texture->Draw(m_box.Get_SDL_Rect()); }
+        void Paint() { if(m_shown) m_texture->Draw(m_box); }
         bool Is_Shown() { return m_shown; }
         void Show() { m_shown = true; }
         void Hide() { m_shown = false; }
