@@ -2,3 +2,4 @@
 *.out
 .vscode
 src/test.cpp
+simulation
