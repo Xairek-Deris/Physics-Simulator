@@ -11,18 +11,17 @@ namespace event
         with a dispatcher to receive events, though you can call
         it directly with raw data using handle()
     */
-    class EventHandler
+    class Handler
     {
     public:
         //Creates unregistered handler
-        EventHandler(void (*h)(void*, const void*), void* d)
+        Handler(void (*h)(void*, const void*), void* d)
         : handler_{ h }, data_{ d }, dispatcher_{ NULL }
         {}
 
         //Creates registered handler. Requires the dispatcher to be initialized 
         //with this handler's address at the index provided or they will not connect
-        EventHandler(void (*h)(void*, const void*),
-                        void* d, EventDispatcher& e_d, unsigned i)
+        Handler(void (*h)(void*, const void*), void* d, Dispatcher& e_d, unsigned i)
         : handler_{ h }, data_{ d }, dispatcher_{ &e_d }, index_{ i }
         {}
 
@@ -38,7 +37,7 @@ namespace event
             handler_(data_, d);
         }
 
-        EventDispatcher* dispatcher()
+        Dispatcher* dispatcher()
         {
             return dispatcher_;
         }
@@ -46,9 +45,9 @@ namespace event
     private:
         void (*handler_)(void* misc_data, const void* event_data);
         void* data_;
-        EventDispatcher* dispatcher_;
+        Dispatcher* dispatcher_;
         unsigned index_;
-        friend class EventDispatcher;
+        friend class Dispatcher;
     };
 
 
@@ -60,7 +59,7 @@ namespace event
         Dispatches events to registered handlers. Make one of these
         for each event type you want to be able to process
     */
-    class EventDispatcher
+    class Dispatcher
     {
     public:
         /*
@@ -69,11 +68,11 @@ namespace event
             is done by initializing the handlers with the constructor
             that takes an integer as one of the arguments
         */
-        EventDispatcher(const std::vector<EventHandler*>& h = {})
+        Dispatcher(const std::vector<Handler*>& h = {})
         : handlers_{ h }
         {}
 
-        EventDispatcher() {}
+        Dispatcher() {}
 
         //calls all registered handlers using the data provided
         void dispatch(const void* d)
@@ -85,7 +84,7 @@ namespace event
         }
 
         //registers handler with dispatcher so it will receive all events
-        void register_handler(EventHandler& h)
+        void register_handler(Handler& h)
         {
             unsigned index = handlers_.size();
             handlers_.push_back(&h);
@@ -94,7 +93,7 @@ namespace event
 
         //Removes handler from dispatcher and updates all
         //other registered handlers accordingly
-        void unregister_handler(EventHandler& h)
+        void unregister_handler(Handler& h)
         {
             handlers_.erase(handlers_.begin() + h.index_);
             for(auto j = h.index_; j < handlers_.size(); j++)
@@ -111,7 +110,7 @@ namespace event
         }
 
     private:
-        std::vector<EventHandler*> handlers_;
-        friend class EventHandler;
+        std::vector<Handler*> handlers_;
+        friend class Handler;
     };
 }//namespace event

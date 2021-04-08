@@ -8,7 +8,7 @@
 namespace event
 {
     //Thread-safe queue to store and dispatch events.
-    class EventQueue
+    class Queue
     {
     public:        
         //Push an event onto the queue
