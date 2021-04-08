@@ -2,20 +2,24 @@
 
 MYFLAGS = g++ -std=gnu++17
 SDL_LIB = /usr/local/lib/libSDL2.so
+PHYS = src/Physics
+DISP = src/Display
+EVENT = src/Event
 
 application.out: intermediates/main.o intermediates/particle.o intermediates/engine.o intermediates/window.o
-	$(MYFLAGS) intermediates/main.o intermediates/particle.o intermediates/window.o $(SDL_LIB) intermediates/engine.o -o $@
+	$(MYFLAGS) $(SDL_LIB) intermediates/main.o intermediates/particle.o intermediates/window.o intermediates/engine.o -o $@
 
-main.o: src/main.cpp src/Physics/vector.h src/Physics/particle.h src/Physics/camera.h \
-		src/Physics/clock.h src/Display/window.h src/Display/thread.h \
-		src/Display/renderer.h src/Display/texture.h src/Display/point.h src/Display/box.h src/engine.h
-	$(MYFLAGS) -c src/main.cpp -o intermediates/$@
+intermediates/main.o: src/main.cpp $(PHYS)/vector.h $(PHYS)/particle.h $(PHYS)/camera.h \
+					  $(PHYS)/clock.h $(DISP)/window.h $(DISP)/thread.h $(DISP)/renderer.h \
+					  $(DISP)/texture.h $(DISP)/point.h $(DISP)/box.h $(EVENT)/event.h \
+					  $(EVENT)/queue.h $(EVENT)/handler.h src/engine.h
+	$(MYFLAGS) -c src/main.cpp -o $@
 
-particle.o: src/Physics/particle.cpp src/Physics/particle.h src/Physics/vector.h
-	$(MYFLAGS) -c src/Physics/particle.cpp -o intermediates/$@
+intermediates/particle.o: $(PHYS)/particle.cpp $(PHYS)/particle.h $(PHYS)/vector.h
+	$(MYFLAGS) -c $(PHYS)/particle.cpp -o $@
 
-engine.o: src/engine.cpp src/engine.h src/Display/thread.h src/Physics/camera.h src/Physics/clock.h
-	$(MYFLAGS) -c src/engine.cpp -o intermediates/$@
+intermediates/engine.o: src/engine.cpp src/engine.h $(DISP)/thread.h $(PHYS)/camera.h $(PHYS)/clock.h
+	$(MYFLAGS) -c src/engine.cpp -o $@
 
-window.o: src/Display/window.cpp src/Display/window.h
-	$(MYFLAGS) -c src/Display/window.cpp -o intermediates/$@
+intermediates/window.o: $(DISP)/window.cpp $(DISP)/window.h
+	$(MYFLAGS) -c $(DISP)/window.cpp -o $@
