@@ -20,19 +20,12 @@ namespace phys
 
 		Particle() {}
 
-		Vector position() 	{ return position_; }
-		Vector velocity() 	{ return velocity_; }
-		double mass() 		{ return mass_; }
-		double charge() 	{ return charge_; }
-		double radius() 	{ return radius_; }
-		double hardness() 	{ return hardness_; }
-
-		void set_position(const Vector& p) 	{ position_ = p; }
-		void set_velocity(const Vector& v) 	{ velocity_ = v; }
-		void set_mass(double m) 			{ mass_ = m; }
-		void set_charge(double c) 			{ charge_ = c; }
-		void set_radius(double r) 			{ radius_ = r; }
-		void set_hardness(double h) 		{ hardness_ = h; }
+		Vector& position() 	{ return position_; }
+		Vector& velocity() 	{ return velocity_; }
+		double& mass() 		{ return mass_; }
+		double& charge() 	{ return charge_; }
+		double& radius() 	{ return radius_; }
+		double& hardness() 	{ return hardness_; }
 
 		//Applies all forces and updates the position/velocity of both particles
 		void update(double time)

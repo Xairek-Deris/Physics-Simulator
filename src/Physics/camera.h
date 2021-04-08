@@ -16,11 +16,9 @@ namespace phys
         : position_{ p }, velocity_{ v }, zoom_{ z } 
         {}
         
-        Vector position()   { return position_; }
-        double zoom()       { return zoom_; }
-
-        void set_position(const Vector& p)  { position_ = p; }
-        void set_zoom(double z)             { zoom_ = z; }
+        Vector& position()   { return position_; }
+        Vector& velocity()   { return velocity_; }
+        double& zoom()       { return zoom_; }
 
         //Updates position based on veloctiy and time (t)
         void update(double t) 

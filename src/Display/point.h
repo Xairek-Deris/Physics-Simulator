@@ -12,10 +12,8 @@ namespace disp
         : point_{ x, y }
         {}
 
-        int x()             { return point_.x; }
-        int y()             { return point_.y; }
-        void set_x(int x)   { point_.x = x; }
-        void set_y(int y)   { point_.y = y; }
+        int& x() { return point_.x; }
+        int& y() { return point_.y; }
 
         const SDL_Point* point() const { return &point_; }
 

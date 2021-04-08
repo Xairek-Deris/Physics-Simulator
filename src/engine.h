@@ -45,8 +45,7 @@ namespace phys
         bool paused()   { return pause_; }
 
         //Multiplier for a running engine. Doesn't affect step
-        double speed() const        { return speed_; }
-        void set_speed(double s)    { speed_ = s; }
+        double& speed() { return speed_; }
 
         //Updates all particles, obstacles, and cameras for the interval (t)
         void step(double t);

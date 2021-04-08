@@ -14,15 +14,11 @@ namespace disp
         Box(int x = 0, int y = 0, int w = 0, int h = 0) 
         : box_{ x, y, w, h } 
         {}
-        
-        int x() const           { return box_.x; }
-        int y() const           { return box_.y; }
-        int width() const       { return box_.w; }
-        int height() const      { return box_.h; }
-        void set_x(int x)       { box_.x = x; }
-        void set_y(int y)       { box_.y = y; }
-        void set_width(int w)   { box_.w = w; }
-        void set_height(int h)  { box_.h = h; }
+
+        int& x()        { return box_.x; }
+        int& y()        { return box_.y; }
+        int& width()    { return box_.w; }
+        int& height()   { return box_.h; }
 
         const SDL_Rect* rect() const { return &box_; }
 

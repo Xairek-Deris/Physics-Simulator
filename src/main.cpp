@@ -56,7 +56,7 @@ int main(int argc, char** argv)
                         engine.unpause();
                     else engine.pause();
                 else if(window.event().key.keysym.scancode == SDL_SCANCODE_E)
-                    engine.set_speed(engine.speed() * -1);
+                    engine.speed() *= -1;
                 break;
             }
         }
@@ -66,18 +66,22 @@ int main(int argc, char** argv)
         phys::Camera* camera = &cameras[active_cam];
         for(auto& i : particles)
         {
-            box.set_x((i.position().x() - camera->position().x() - i.radius()) * camera->zoom() + window.width() / 2);
-            box.set_y(window.height() / 2 - (i.position().y() - camera->position().y() + i.radius()) * camera->zoom());
-            box.set_width(i.radius() * 2 * camera->zoom());
-            box.set_height(i.radius() * 2 * camera->zoom());
+            box.x() = (i.position().x() - camera->position().x() - i.radius()) * camera->zoom() + window.width() / 2;
+            box.y() = window.height() / 2 - (i.position().y() - camera->position().y() + i.radius()) * camera->zoom();
+
+            box.width()  = i.radius() * 2 * camera->zoom();
+            box.height() = i.radius() * 2 * camera->zoom();
+
             texture.draw(box);
         }
         for(auto& i : obstacles)
         {
-            box.set_x((i.position().x() - camera->position().x() - i.radius()) * camera->zoom() + window.width() / 2);
-            box.set_y(window.height() / 2 - (i.position().y() - camera->position().y() + i.radius()) * camera->zoom());
-            box.set_width(i.radius() * 2 * camera->zoom());
-            box.set_height(i.radius() * 2 * camera->zoom());
+            box.x() = (i.position().x() - camera->position().x() - i.radius()) * camera->zoom() + window.width() / 2;
+            box.y() = window.height() / 2 - (i.position().y() - camera->position().y() + i.radius()) * camera->zoom();
+
+            box.width()  = (i.radius() * 2 * camera->zoom());
+            box.height() = (i.radius() * 2 * camera->zoom());
+
             texture.draw(box);
         }
         renderer.display();
