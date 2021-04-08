@@ -1,10 +1,6 @@
 #include <iostream>
 #include <vector>
 
-#include "Physics/camera.h"
-#include "Physics/clock.h"
-#include "Physics/particle.h"
-#include "Physics/vector.h"
 #include "Display/box.h"
 #include "Display/point.h"
 #include "Display/renderer.h"
@@ -12,6 +8,10 @@
 #include "Display/thread.h"
 #include "Display/window.h"
 #include "engine.h"
+#include "Physics/camera.h"
+#include "Physics/clock.h"
+#include "Physics/particle.h"
+#include "Physics/vector.h"
 
 long long dframes = 0;
 long long pframes = 0;
@@ -32,10 +32,10 @@ int main(int argc, char** argv)
     std::vector<phys::Camera> cameras;
     
     //Manually add more particles here
-    particles.push_back({ { -5, 0, 0 }, { .1, 0, 0 }, 9, -.001, 1, .1});
-    particles.push_back({ { 5, 0, 0 }, { -1, 0, 0 }, 10, 0.001, 1, .1});
-    particles.push_back({ { 0, -5, 0 }, { 0, 1, 0 }, 6, 0.001, 1, .1});
-    particles.push_back({ { 0, 5, 0 }, { 0, -1, 0 }, 20, -.001, 1, .1});
+    particles.push_back({ { -5, 0, 0 }, { .1, 0, 0 },  9,  -.001, 1, .1});
+    particles.push_back({ { 5, 0, 0 },  { -1, 0, 0 },  10, 0.001, 1, .1});
+    particles.push_back({ { 0, -5, 0 }, { 0, 1, 0 },   6,  0.001, 1, .1});
+    particles.push_back({ { 0, 5, 0 },  { 0, -1, 0 },  20, -.001, 1, .1});
 
     //will support more cameras, hardcoding until then
     cameras.push_back( phys::Camera({ 0, 0, 0 }, { 0, 0, 0 }, 10) );

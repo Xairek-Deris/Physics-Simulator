@@ -1,12 +1,26 @@
 #pragma once
 
-namespace phys
+#include "event_handler.h"
+
+class Event
 {
-    struct Event
+public:
+    //Initialize using dispatcher directly
+    Event(void* d, EventDispatcher& e_d) 
+    : data_{ d }, dispatcher_{ &e_d } 
+    {}
+
+    //Initialize even using dispatcher from a handler
+    Event(void* d, EventHandler& e_h) 
+    : data_{ d }, dispatcher_{ e_h.dispatcher() } 
+    {}
+
+    void process()
     {
-        Event(void* d, unsigned i) : data{ d }, index{ i } {}
-        
-        void* data;
-        unsigned index;
-    };
-}
+        dispatcher_->dispatch(data_);
+    }
+
+private:
+    void* data_;
+    EventDispatcher* dispatcher_;
+};

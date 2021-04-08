@@ -1,3 +1,5 @@
+#please excuse the mess, I have never used one of these before.
+
 MYFLAGS = g++ -std=gnu++17
 SDL_LIB = /usr/local/lib/libSDL2.so
 
