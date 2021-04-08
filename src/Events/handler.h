@@ -14,7 +14,8 @@ namespace event
     class Handler
     {
     public:
-        //Creates unregistered handler
+        //Creates unregistered handler. Safe to move or copy.
+        //Copies will also register themselves separately from original.
         Handler(void (*h)(void*, const void*), void* d)
         : handler_{ h }, data_{ d }, dispatcher_{ NULL }
         {}
@@ -31,6 +32,18 @@ namespace event
         Handler(void (*h)(void*, const void*), void* d, Dispatcher& e_d, unsigned i)
         : handler_{ h }, data_{ d }, dispatcher_{ &e_d }, index_{ i }
         {}
+
+        Handler(Handler& h)
+        : handler_{ h.handler_ }, data_{ h.data_ }
+        {
+            h.dispatcher_->register_handler(*this);
+        }
+
+        Handler(Handler&& h)
+        : handler_{ h.handler_ }, data_{ h.data_ }, dispatcher_{ h.dispatcher_ }, index_{ h.index_ }
+        {
+            update_registration();
+        }
 
         //Updates address stored by the dispatcher with current address
         void update_registration()
