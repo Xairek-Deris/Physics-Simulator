@@ -19,6 +19,13 @@ namespace event
         : handler_{ h }, data_{ d }, dispatcher_{ NULL }
         {}
 
+        //Creates and registers handler with the dispatcher
+        Handler(void (*h)(void*, const void*), void* d, Dispatcher& e_d)
+        : handler_{ h }, data_{ d }
+        {
+            e_d.register_handler(*this);
+        }
+
         //Creates registered handler. Requires the dispatcher to be initialized 
         //with this handler's address at the index provided or they will not connect
         Handler(void (*h)(void*, const void*), void* d, Dispatcher& e_d, unsigned i)

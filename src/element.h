@@ -44,12 +44,6 @@ namespace sim
             textures_[texture_].draw(box_);
         }
 
-        //registers handler at index h with the dispatcher
-        void register_handler(unsigned h, event::Dispatcher& d)
-        {
-            d.register_handler(handlers_[h]);
-        }
-
         //updates the registrations for all handlers
         void update_registrations()
         {
