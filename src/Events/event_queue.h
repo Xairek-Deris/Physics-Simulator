@@ -33,6 +33,16 @@ namespace event
             return 1;
         }
 
+        void lock()
+        {
+            mutex_.lock();
+        }
+
+        void unlock()
+        {
+            mutex_.unlock();
+        }
+
     private:
         std::queue<Event> events_;
         std::mutex mutex_;
