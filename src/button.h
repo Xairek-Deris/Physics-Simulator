@@ -1,71 +1,79 @@
 #pragma once
 
-#include "element.h"
-#include "Display/texture.h"
-#include "Events/handler.h"
 #include "Display/box.h"
 #include "Display/point.h"
+#include "Display/texture.h"
+#include "Events/handler.h"
 
 
 namespace sim
 {
-    class Button : public Element
+    class Button
     {
     public:
         Button
-            (
+        (
             const event::Handler& on_click,
             const disp::Texture& def_tex,
             const disp::Texture& click_tex,
             const disp::Texture& hover_tex,
             const disp::Texture& dis_tex,
             const disp::Box& box
-            )
-        :   clicked_{ false },
-            hovered_{ false },
-            on_click_{ on_click },
-            on_press_{ press, this },
-            on_release_{ release, this },
-            Element({def_tex, click_tex, hover_tex, dis_tex}, box)
-        {}
+        );
 
         void click()
         {
             on_click_.handle(NULL);
         }
 
-        event::Handler& on_click()          { return on_click_; }
-        const event::Handler& on_press()    { return on_press_; }
-        const event::Handler& on_release()  { return on_release_; }
+        void paint()
+        {
+            if(shown_)
+                active_tex_->draw(box_);
+        }
+
+        void enable()
+        {
+            disabled_ = false;
+            active_tex_ = &default_tex_;
+        }
+
+        void disable()
+        {
+            disabled_ = true;
+            active_tex_ = &disabled_tex_;
+        }
+
+        void show() { shown_ = true; }
+        void hide() { shown_ = false; }
+
+        event::Handler& on_click()      { return on_click_; }
+        event::Handler& on_move()       { return on_mouse_move_; }
+        event::Handler& on_press()      { return on_press_; }
+        event::Handler& on_release()    { return on_release_; }
 
     private:
         bool clicked_;
         bool hovered_;
+        bool disabled_;
+        bool shown_;
+
         event::Handler on_click_;
+        event::Handler on_mouse_move_;
         event::Handler on_press_;
         event::Handler on_release_;
 
-        static void press(void* d,  const void* e)
-        {
-            disp::Point point = *((disp::Point*)e);
-            Button button = *((Button*)d);
+        disp::Texture default_tex_;
+        disp::Texture click_tex_;
+        disp::Texture hover_tex_;
+        disp::Texture disabled_tex_;
 
-            if(button.box().contains_point(point))
-            {
-                button.clicked_ = true;
-            }
-        }
+        disp::Texture* active_tex_;
 
-        static void release(void* d,  const void* e)
-        {
-            Button button = *((Button*)d);
-            disp::Point point = *((disp::Point*)e);
+        disp::Box box_;
 
-            if(button.clicked_ && button.box().contains_point(point))
-            {
-                button.clicked_ = true;
-            }
-            button.clicked_ = false;
-        }
+        static void move(void* d,  const void* e);
+        static void press(void* d,  const void* e);
+        static void release(void* d,  const void* e);
     };
 }
