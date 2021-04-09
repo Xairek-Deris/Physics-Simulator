@@ -11,12 +11,11 @@ namespace sim
     class Element
     {
     public:
-        Element(const std::vector<disp::Texture>& t, 
-                    const std::vector<event::Handler>& h, const disp::Box& b)
-        : textures_{ t }, handlers_{ h }, box_{ b }, texture_{ 0 }
+        Element(const std::vector<disp::Texture>& t, const disp::Box& b)
+        : textures_{ t }, box_{ b }, texture_{ 0 }
         {}
 
-        void add_texture(const disp::Texture& t)
+        void new_texture(const disp::Texture& t)
         {
             textures_.push_back(t);
         }
@@ -38,22 +37,16 @@ namespace sim
             return texture_;
         }
 
+        disp::Texture& texture(int t) { return textures_[t]; }
+
         //paints the active texture onto the screen
         void paint()
         {
             textures_[texture_].draw(box_);
         }
 
-        //updates the registrations for all handlers
-        void update_registrations()
-        {
-            for(auto h : handlers_)
-                h.update_registration();
-        }
-
     private:
         std::vector<disp::Texture> textures_;
-        std::vector<event::Handler> handlers_;
         disp::Box box_;
         unsigned texture_;
     };
