@@ -1,6 +1,6 @@
 #pragma once
 
-#include "handler.h"
+#include "dispatcher.h"
 
 namespace event
 {
@@ -10,11 +10,6 @@ namespace event
         //Initialize using dispatcher directly
         Event(void* d, Dispatcher& e_d) 
         : data_{ d }, dispatcher_{ &e_d } 
-        {}
-
-        //Initialize even using dispatcher from a handler
-        Event(void* d, Handler& e_h) 
-        : data_{ d }, dispatcher_{ e_h.dispatcher() } 
         {}
 
         void process()
