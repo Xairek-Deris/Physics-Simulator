@@ -31,6 +31,7 @@ int main(int argc, char** argv)
 
     phys::Engine engine(particles, obstacles, cameras);
     engine.start();
+    phys::Clock clock;
     while(!window.should_quit())
     {
         //Event Handling
@@ -76,5 +77,6 @@ int main(int argc, char** argv)
         dframes++;
     }
     engine.stop();
-    std::cout << pframes/dframes << std::endl;
+    std::cout << pframes/clock.time() << " physics fps\n";
+    std::cout << dframes/clock.time() << " display fps\n";
 }
