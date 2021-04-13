@@ -1,29 +1,46 @@
 # Physics-Simulator
-Small physics simulator that is my first start-to-finish project. 
-Will be practicing c++, and specifically object oriented programming,
-as well as refreshing some basic physics that I learned in school.
 
-I intentionally avoided calculus in my engine so I could focus on the programming side of things.
-I also wanted to test the limits of doing physics with rapid frame updates instead of calculus.
+DESCRIPTION:
+My first start-to-finish project. This is a physics simulator that calculates
+and renders gravitation, electric attraction, and collision between circular
+particles in real time. The project uses SDL2 to render and manage input, 
+but the rest of the code was made by me.
+
+PURPOSE:
+To gain experience in creating classes, learning how guis work, bugfixing,
+and using 3rd party libraries, git, and make.
+
+A side benefit is that I can brush up on some basic physics.
 
 REQUIREMENTS:
-SDL runtime binaries and libraries are needed as I do not have the libraries included in the project files yet.
-Compile (using c++17 or later) Main.cpp Window.cpp Engine.cpp Particle.cpp
-as well as any SDL, depending on the location and format of the library.
+SDL2 libraries are required for this project.
 
-Currently only has hard-coded particles. You can add some more by using pushing back particles into the "particles" vector.
-Obstacles are just particles that never move. You create one by pushing a particle into the "obstacles" vector.
+Linux is recommended, as I have not yet done testing on windows. The code
+should be cross platform, but the makefile might not be.
+
+MAKING:
+1. Ensure that the makefile's CFLAGS has the right library path for SDL2.
+2. run make config (to produce the intermediates directories)
+3. run make
 
 CONTROLS:
-Spacebar pauses and unpauses the simulation
-E reverses the direction of time
+e: reverses time in the engine
+space: pauses/unpauses the engine
 
-The program quickly becomes less accurate if your particles move too fast and/or there are too many particles. This is because 
-the physics is done on a separate thread without calculus in the calculations. This means that high update rates are required to
-simulate a continuous calculation like calculus would give. Under small ( < 10 ) numbers of particles, with low ( < 20 ) speeds,
-the simulation is pretty accurate.
+LIMITATIONS:
+-Particles are calculated in 3d, but only displayed in 2d for now.
+-No commands or GUI implemented yet, so all changed must be hard-coded.
 
-Program only renders 2d because I do not know how to use OpenGL yet. The physics are in 3d, however, so if you set a particle to
-Z!=0 then it will work properly, but the view will be silhouettes of the actual motion.
+-Because the engine just calculates the force each frame and applies
+acceleration, if a particle is moving too fast relative to the
+frame rate, it will calculate collisions very wrong. I increased the
+frame rate of the engine by running it on a separate thread, so it
+would be uncapped by vsync, which greatly improved performance.
 
-GUI portions are still unimplemented because I am building one by scratch so I can learn how they work.
+-Because the engine indiscriminately calculates particle interactions,
+the complexity is O(n^2), greatly affecting the frame rate.
+
+TODO:
+Implement GUI.
+Use OpenGL to render in 3d.
+Optimize particle interactions.
