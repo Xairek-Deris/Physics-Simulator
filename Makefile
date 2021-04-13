@@ -32,10 +32,12 @@ PHYS_O = $(patsubst %, $(PHYS_BLD)/%, $(_PHYS_O))
 bin/simulation: $(BLD)/main.o $(BLD)/engine.o $(DISP_O) $(PHYS_O)
 	$(CC) $(CFLAGS) $(BLD)/main.o $(BLD)/engine.o $(DISP_O) $(PHYS_O) -lSDL2 -o $@
 
-$(BLD)/main.o: $(SRC)/main.cpp $(SRC)/engine.h $(DISP_SRC)/display.h $(PHYS_SRC)/physics.h
+$(BLD)/main.o: 	$(SRC)/main.cpp $(SRC)/engine.h\
+				$(DISP_SRC)/display.h $(PHYS_SRC)/physics.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BLD)/engine.o: $(SRC)/engine.cpp $(SRC)/engine.h $(DISP_SRC)/display.h $(PHYS_SRC)/physics.h
+$(BLD)/engine.o: 	$(SRC)/engine.cpp $(SRC)/engine.h\
+					$(DISP_SRC)/display.h $(PHYS_SRC)/physics.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
@@ -58,6 +60,9 @@ $(EVEN_SRC)/events.h: $(EVEN_H)
 $(PHYS_SRC)/physics.h: $(PHYS_H)
 	touch $(PHYS_SRC)/physics.h
 
+
+config:
+	mkdir bin build build/physics build/display build/events
 
 clean:
 	rm build/*.o build/display/*.o build/events/*.o build/physics/*.o
