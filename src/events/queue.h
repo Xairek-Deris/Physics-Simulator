@@ -21,17 +21,7 @@ namespace event
 
         //Dispatch the event at the front of the queue
         //Returns 0 if queue was empty, or 1 if success
-        int dispatch_event()
-        {
-            if(events_.size() == 0)
-                return 0;
-            mutex_.lock();
-            Event e = events_.front();
-            events_.pop();
-            mutex_.unlock();
-            e.process();
-            return 1;
-        }
+        int dispatch_event();
 
         void lock()
         {

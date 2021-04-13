@@ -13,12 +13,7 @@ namespace phys
 	public:
 		//p = position, v = velocity, m = mass, c = charge, r = radius, h = hardness
 		Particle(const Vector& p = {}, const Vector& v = {}, double m = 1, 
-				double c = 0, double r = 0, double h = 0)
-			: position_{ p }, velocity_{ v }, mass_{ m }, charge_{ c }, radius_{ r }, 
-				hardness_{ h }
-			{}
-
-		Particle() {}
+				double c = 0, double r = 0, double h = 0);
 
 		Vector& position() 	{ return position_; }
 		Vector& velocity() 	{ return velocity_; }
@@ -28,13 +23,7 @@ namespace phys
 		double& hardness() 	{ return hardness_; }
 
 		//Applies all forces and updates the position/velocity of both particles
-		void update(double time)
-		{
-			acceleration_ 	= net_force_ / mass_;
-			velocity_ 		+= acceleration_ * time;
-			position_ 		+= velocity_ * time;
-			net_force_ 		-= net_force_;
-		}
+		void update(double time);
 
 		static void interact(Particle& p1, Particle& p2);
 

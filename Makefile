@@ -1,25 +1,63 @@
-#please excuse the mess, I have never used one of these before.
+CC = g++
+CFLAGS = -std=gnu++17 -L /usr/local/lib
 
-MYFLAGS = g++ -std=gnu++17
-SDL_LIB = /usr/local/lib/libSDL2.so
-PHYS = src/Physics
-DISP = src/Display
-EVENT = src/Event
+SRC = src
+DISP_SRC = $(SRC)/display
+EVEN_SRC = $(SRC)/events
+PHYS_SRC = $(SRC)/physics
 
-application.out: intermediates/main.o intermediates/particle.o intermediates/engine.o intermediates/window.o
-	$(MYFLAGS) $(SDL_LIB) intermediates/main.o intermediates/particle.o intermediates/window.o intermediates/engine.o -o $@
+BLD = build
+DISP_BLD = $(BLD)/display
+EVEN_BLD = $(BLD)/events
+PHYS_BLD = $(BLD)/physics
 
-intermediates/main.o: src/main.cpp $(PHYS)/vector.h $(PHYS)/particle.h $(PHYS)/camera.h \
-					  $(PHYS)/clock.h $(DISP)/window.h $(DISP)/thread.h $(DISP)/renderer.h \
-					  $(DISP)/texture.h $(DISP)/point.h $(DISP)/box.h $(EVENT)/event.h \
-					  $(EVENT)/queue.h $(EVENT)/handler.h src/engine.h
-	$(MYFLAGS) -c src/main.cpp -o $@
 
-intermediates/particle.o: $(PHYS)/particle.cpp $(PHYS)/particle.h $(PHYS)/vector.h
-	$(MYFLAGS) -c $(PHYS)/particle.cpp -o $@
+_PHYS_H = camera.h clock.h particle.h vector.h
+_DISP_H = box.h point.h renderer.h texture.h thread.h window.h
+_EVEN_H = dispatcher.h event.h handler.h queue.h
 
-intermediates/engine.o: src/engine.cpp src/engine.h $(DISP)/thread.h $(PHYS)/camera.h $(PHYS)/clock.h
-	$(MYFLAGS) -c src/engine.cpp -o $@
+_PHYS_O = clock.o particle.o vector.o
+_DISP_O = display.o renderer.o texture.o window.o
+_EVEN_O = queue.o
 
-intermediates/window.o: $(DISP)/window.cpp $(DISP)/window.h
-	$(MYFLAGS) -c $(DISP)/window.cpp -o $@
+DISP_H = $(patsubst %, $(DISP_SRC)/%, $(_DISP_H))
+EVEN_H = $(patsubst %, $(EVEN_SRC)/%, $(_EVEN_H))
+PHYS_H = $(patsubst %, $(PHYS_SRC)/%, $(_PHYS_H))
+
+DISP_O = $(patsubst %, $(DISP_BLD)/%, $(_DISP_O))
+EVEN_O = $(patsubst %, $(EVEN_BLD)/%, $(_EVEN_O))
+PHYS_O = $(patsubst %, $(PHYS_BLD)/%, $(_PHYS_O))
+
+
+bin/simulation: $(BLD)/main.o $(BLD)/engine.o $(DISP_O) $(PHYS_O)
+	$(CC) $(CFLAGS) $(BLD)/main.o $(BLD)/engine.o $(DISP_O) $(PHYS_O) -lSDL2 -o $@
+
+$(BLD)/main.o: $(SRC)/main.cpp $(SRC)/engine.h $(DISP_SRC)/display.h $(PHYS_SRC)/physics.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BLD)/engine.o: $(SRC)/engine.cpp $(SRC)/engine.h $(DISP_SRC)/display.h $(PHYS_SRC)/physics.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+
+$(DISP_BLD)/%.o: $(DISP_SRC)/%.cpp $(DISP_SRC)/display.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(EVEN_BLD)/%.o: $(EVEN_SRC)/%.cpp $(EVEN_SRC)/events.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(PHYS_BLD)/%.o: $(PHYS_SRC)/%.cpp $(PHYS_SRC)/physics.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+
+$(DISP_SRC)/display.h: $(DISP_H)
+	touch $(DISP_SRC)/display.h
+
+$(EVEN_SRC)/events.h: $(EVEN_H)
+	touch $(EVEN_SRC)/events.h
+
+$(PHYS_SRC)/physics.h: $(PHYS_H)
+	touch $(PHYS_SRC)/physics.h
+
+
+clean:
+	rm build/*.o build/display/*.o build/events/*.o build/physics/*.o

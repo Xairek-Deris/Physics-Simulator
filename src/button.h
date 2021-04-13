@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Display/box.h"
-#include "Display/point.h"
-#include "Display/texture.h"
-#include "Events/handler.h"
+#include "display/display.h"
+#include "events/events.h"
 
 
 namespace sim

@@ -2,9 +2,8 @@
 
 #include <vector>
 
-#include "Physics/particle.h"
-#include "Physics/camera.h"
-#include "Display/thread.h"
+#include "physics/physics.h"
+#include "display/display.h"
 
 namespace phys
 {

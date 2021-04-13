@@ -2,6 +2,31 @@
 
 #include "vector.h"
 
+phys::Particle::Particle
+(
+	const Vector& p,
+	const Vector& v,
+	double m, 
+	double c,
+	double r,
+	double h
+)
+: 	position_{ p },
+	velocity_{ v },
+	mass_{ m },
+	charge_{ c },
+	radius_{ r }, 
+	hardness_{ h }
+{}
+
+void phys::Particle::update(double time)
+{
+	acceleration_ 	= net_force_ / mass_;
+	velocity_ 		+= acceleration_ * time;
+	position_ 		+= velocity_ * time;
+	net_force_ 		-= net_force_;
+}
+
 void phys::Particle::interact(Particle& p1, Particle& p2)
 {
 	Vector dist = p1.position_ - p2.position_;

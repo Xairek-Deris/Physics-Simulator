@@ -1,28 +1,16 @@
 #include <iostream>
 #include <vector>
 
-#include "Display/box.h"
-#include "Display/point.h"
-#include "Display/renderer.h"
-#include "Display/texture.h"
-#include "Display/thread.h"
-#include "Display/window.h"
+#include "display/display.h"
+#include "physics/physics.h"
 #include "engine.h"
-#include "Physics/camera.h"
-#include "Physics/clock.h"
-#include "Physics/particle.h"
-#include "Physics/vector.h"
 
 long long dframes = 0;
 long long pframes = 0;
 
 int main(int argc, char** argv)
 {
-    if(SDL_Init(SDL_INIT_VIDEO) != 0)
-    {
-        std::cout << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
-        return -1;
-    }
+    disp::init();
     disp::Window window("Simulation", 1280, 1280);
     disp::Renderer renderer(window);
     std::vector<disp::Texture> textures;

@@ -1,9 +1,7 @@
 #include "button.h"
 
-#include "Display/box.h"
-#include "Display/point.h"
-#include "Display/texture.h"
-#include "Events/handler.h"
+#include "display/display.h"
+#include "events/events.h"
 
 sim::Button::Button
 (

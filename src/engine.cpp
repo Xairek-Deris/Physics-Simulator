@@ -2,9 +2,7 @@
 
 #include <vector>
 
-#include "Physics/camera.h"
-#include "Physics/particle.h"
-#include "Physics/clock.h"
+#include "physics/physics.h"
 
 //temporary frame count for testing
 extern long long pframes;
