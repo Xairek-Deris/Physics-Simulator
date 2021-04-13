@@ -1,34 +1,36 @@
 # Physics-Simulator
 
-DESCRIPTION:
+# Description
 My first start-to-finish project. This is a physics simulator that calculates
 and renders gravitation, electric attraction, and collision between circular
 particles in real time. The project uses SDL2 to render and manage input, 
 but the rest of the code was made by me.
 
-PURPOSE:
+# Purpose
 To gain experience in creating classes, learning how guis work, bugfixing,
 and using 3rd party libraries, git, and make.
 
 A side benefit is that I can brush up on some basic physics.
 
-REQUIREMENTS:
+# Requirements
 SDL2 libraries are required for this project.
 
 Linux is recommended, as I have not yet done testing on windows. The code
 should be cross platform, but the makefile might not be.
 
-MAKING:
+# Making
 1. Ensure that the makefile's CFLAGS has the right library path for SDL2.
 2. run make config (to produce the intermediates directories)
 3. run make
 
-CONTROLS:
+# Controls
 e: reverses time in the engine
+
 space: pauses/unpauses the engine
 
-LIMITATIONS:
+# Limitations
 -Particles are calculated in 3d, but only displayed in 2d for now.
+
 -No commands or GUI implemented yet, so all changed must be hard-coded.
 
 -Because the engine just calculates the force each frame and applies
@@ -40,7 +42,7 @@ would be uncapped by vsync, which greatly improved performance.
 -Because the engine indiscriminately calculates particle interactions,
 the complexity is O(n^2), greatly affecting the frame rate.
 
-TODO:
+# TODO
 Implement GUI.
 Use OpenGL to render in 3d.
 Optimize particle interactions.
