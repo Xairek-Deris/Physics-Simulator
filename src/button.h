@@ -5,6 +5,7 @@
 
 namespace sim
 {
+    //Must call load textures successfully before use
     class Button
     {
     public:
@@ -25,9 +26,9 @@ namespace sim
             }
         }
 
-        void press(disp::Point& p);
-        void release(disp::Point& p);
-        void hover(disp::Point& p);
+        void press(const disp::Point& p);
+        void release(const disp::Point& p);
+        void hover(const disp::Point& p);
         void enable();
         void disable();
         void show() { shown_ = true; }

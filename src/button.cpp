@@ -22,7 +22,7 @@ sim::Button::Button
     data_{ data }
 {}
 
-void sim::Button::press(disp::Point& p)
+void sim::Button::press(const disp::Point& p)
 {
     if(hovered_ && !disabled_)
     {
@@ -31,7 +31,7 @@ void sim::Button::press(disp::Point& p)
     }
 }
 
-void sim::Button::release(disp::Point& p)
+void sim::Button::release(const disp::Point& p)
 {
     active_tex_ = &default_tex_;
     if(pressed_ && hovered_)
@@ -41,7 +41,7 @@ void sim::Button::release(disp::Point& p)
     pressed_ = false;
 }
 
-void sim::Button::hover(disp::Point& p)
+void sim::Button::hover(const disp::Point& p)
 {
     if(!disabled_)
     {
