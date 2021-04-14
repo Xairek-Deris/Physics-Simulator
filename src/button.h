@@ -36,7 +36,6 @@ namespace sim
 
     private:
         bool pressed_;
-        bool hovered_;
         bool disabled_;
         bool shown_;
 

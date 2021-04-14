@@ -10,7 +10,6 @@ sim::Button::Button
     void* data
 )
 :   pressed_{ false },
-    hovered_{ false },
     disabled_{ false },
     shown_{ true },
 
@@ -23,7 +22,7 @@ sim::Button::Button
 
 void sim::Button::press(const disp::Point& p)
 {
-    if(hovered_ && !disabled_)
+    if(!disabled_ && box_.contains_point(p))
     {
         pressed_ = true;
     }
@@ -31,7 +30,7 @@ void sim::Button::press(const disp::Point& p)
 
 void sim::Button::release(const disp::Point& p)
 {
-    if(pressed_ && hovered_)
+    if(pressed_ && box_.contains_point(p))
     {
         on_click_(data_);
     }
