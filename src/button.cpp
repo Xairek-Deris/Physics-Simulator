@@ -1,75 +1,84 @@
 #include "button.h"
 
 #include "display/display.h"
-#include "events/events.h"
 
 sim::Button::Button
 (
-    const event::Handler& on_click,
-    const disp::Texture& def_tex,
-    const disp::Texture& click_tex,
-    const disp::Texture& hover_tex,
-    const disp::Texture& dis_tex,
-    const disp::Box& box
+    const disp::Texture& text_tex,
+    const disp::Box& box,
+    void (*on_click)(void*),
+    void* data
 )
-:   clicked_{ false },
+:   pressed_{ false },
     hovered_{ false },
     disabled_{ false },
     shown_{ true },
 
-    on_click_{ on_click },
-    on_press_{ press, this },
-    on_release_{ release, this },
-    on_mouse_move_{ move, this },
-
-    default_tex_{ def_tex} ,
-    click_tex_{ click_tex },
-    hover_tex_{ hover_tex },
-    disabled_tex_{ dis_tex },
-
+    text_tex_{ text_tex },
     active_tex_{ &default_tex_ },
+    box_{ box },
 
-    box_{ box }
+    on_click_{ on_click },
+    data_{ data }
 {}
 
-void sim::Button::move(void* d,  const void* e)
+void sim::Button::press(disp::Point& p)
 {
-    Button button = *((Button*)d);
-    disp::Point point = *((disp::Point*)e);
-
-    if(!button.hovered_ 
-       && !button.disabled_ 
-       && button.box_.contains_point(point))
+    if(hovered_ && !disabled_)
     {
-        button.hovered_ = true;
-        button.active_tex_ = &button.hover_tex_;
-    }
-
-    else if(button.hovered_)
-    {
-        button.hovered_ = false;
-        button.active_tex_ = &button.default_tex_;
+        active_tex_ = &pressed_tex_;
+        pressed_ = true;
     }
 }
 
-void sim::Button::press(void* d,  const void* e)
+void sim::Button::release(disp::Point& p)
 {
-    Button button = *((Button*)d);
-
-    if(!button.disabled_ && button.hovered_)
+    active_tex_ = &default_tex_;
+    if(pressed_ && hovered_)
     {
-        button.clicked_ = true;
-        button.active_tex_ = &button.click_tex_;
+        on_click_(data_);
+    }
+    pressed_ = false;
+}
+
+void sim::Button::hover(disp::Point& p)
+{
+    if(!disabled_)
+    {
+        if(box_.contains_point(p))
+        {
+            hovered_ = true;
+            active_tex_ = &hover_tex_;
+        }
+        else
+        {
+            hovered_ = false;
+            active_tex_ = &default_tex_;
+        }
     }
 }
 
-void sim::Button::release(void* d,  const void* e)
+void sim::Button::enable()
 {
-    Button button = *((Button*)d);
-
-    if(button.clicked_ && button.hovered_)
-    {
-        button.clicked_ = true;
-    }
-    button.clicked_ = false;
+    disabled_ = false;
+    active_tex_ = &default_tex_;
 }
+
+void sim::Button::disable()
+{
+    disabled_ = true;
+    active_tex_ = &disabled_tex_;
+}
+
+void sim::Button::load_textures(disp::Renderer& r)
+{
+    default_tex_    = disp::Texture("../res/button_default.bmp", r);
+    pressed_tex_    = disp::Texture("../res/button_pressed.bmp", r);
+    hover_tex_      = disp::Texture("../res/button_hover.bmp", r);
+    disabled_tex_   = disp::Texture("../res/button_disabled.bmp", r);
+}
+
+disp::Texture default_tex_;
+disp::Texture pressed_tex_;
+disp::Texture hover_tex_;
+disp::Texture disabled_tex_;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "display/display.h"
-#include "events/events.h"
 
 
 namespace sim
@@ -11,67 +10,47 @@ namespace sim
     public:
         Button
         (
-            const event::Handler& on_click,
-            const disp::Texture& def_tex,
-            const disp::Texture& click_tex,
-            const disp::Texture& hover_tex,
-            const disp::Texture& dis_tex,
-            const disp::Box& box
+            const disp::Texture& text_tex,
+            const disp::Box& box,
+            void (*on_click)(void*),
+            void* data
         );
 
-        void click()
-        {
-            on_click_.handle(NULL);
-        }
-
-        void paint()
+        void draw()
         {
             if(shown_)
+            {
                 active_tex_->draw(box_);
+                text_tex_.draw(box_);
+            }
         }
 
-        void enable()
-        {
-            disabled_ = false;
-            active_tex_ = &default_tex_;
-        }
-
-        void disable()
-        {
-            disabled_ = true;
-            active_tex_ = &disabled_tex_;
-        }
-
+        void press(disp::Point& p);
+        void release(disp::Point& p);
+        void hover(disp::Point& p);
+        void enable();
+        void disable();
         void show() { shown_ = true; }
         void hide() { shown_ = false; }
 
-        event::Handler& on_click()      { return on_click_; }
-        event::Handler& on_move()       { return on_mouse_move_; }
-        event::Handler& on_press()      { return on_press_; }
-        event::Handler& on_release()    { return on_release_; }
-
     private:
-        bool clicked_;
+        bool pressed_;
         bool hovered_;
         bool disabled_;
         bool shown_;
 
-        event::Handler on_click_;
-        event::Handler on_mouse_move_;
-        event::Handler on_press_;
-        event::Handler on_release_;
-
-        disp::Texture default_tex_;
-        disp::Texture click_tex_;
-        disp::Texture hover_tex_;
-        disp::Texture disabled_tex_;
-
+        disp::Texture text_tex_;
         disp::Texture* active_tex_;
-
         disp::Box box_;
 
-        static void move(void* d,  const void* e);
-        static void press(void* d,  const void* e);
-        static void release(void* d,  const void* e);
+        void (*on_click_)(void* data);
+        void* data_;
+
+        static void load_textures(disp::Renderer& r);
+
+        static disp::Texture default_tex_;
+        static disp::Texture pressed_tex_;
+        static disp::Texture hover_tex_;
+        static disp::Texture disabled_tex_;
     };
-}
+} //namespace sim
