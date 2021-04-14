@@ -13,6 +13,8 @@ namespace event
     class Dispatcher
     {
     public:
+        Dispatcher() {}
+
         //Initializes dispatcher with handlers. Handlers will be registered.
         Dispatcher(const std::vector<Handler*>& h = {})
         : handlers_{ h }
@@ -30,14 +32,13 @@ namespace event
         //Registers handler with dispatcher so it will receive all events
         void register_handler(Handler& h)
         {
-            unsigned index = handlers_.size();
             handlers_.push_back(&h);
         }
 
         //Removes handler from dispatcher, do this if you delete a handler.
         void unregister_handler(Handler& h)
         {
-            handlers_.erase(find(handlers_.begin(), handlers_.end(), h));
+            handlers_.erase(find(handlers_.begin(), handlers_.end(), &h));
         }
 
     private:

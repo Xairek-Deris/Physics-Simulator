@@ -8,8 +8,8 @@ namespace event
     {
     public:
         //Initialize using dispatcher directly
-        Event(void* d, Dispatcher& e_d) 
-        : data_{ d }, dispatcher_{ &e_d } 
+        Event(void* data, Dispatcher& disp) 
+        : data_{ data }, dispatcher_{ &disp } 
         {}
 
         void process()
