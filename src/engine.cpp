@@ -33,20 +33,19 @@ void phys::Engine::step(double t)
     }
 }
 
-int phys::Engine::thread_function(void* e)
+int phys::Engine::thread_function()
 {
-    #define ENGINE (*(Engine*)e)
     Clock clock;
 
-    while(!ENGINE.stop_)
+    while(!stop_)
     {
-        if(!ENGINE.pause_)
+        if(!pause_)
         {
             clock.resume();
-            while(!ENGINE.pause_)
+            while(!pause_)
             {
-                double time = clock.lap() * ENGINE.speed_;
-                ENGINE.step(time);
+                double time = clock.lap() * speed_;
+                step(time);
                 pframes++;
             }           
             clock.stop();

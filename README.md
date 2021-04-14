@@ -20,8 +20,9 @@ should be cross platform, but the makefile might not be.
 
 # Making
 1. Ensure that the makefile's CFLAGS has the right library path for SDL2.
-2. run make config (to produce the intermediates directories)
-3. run make
+2. Ensure that the makefile's LDFLAGS has any flags needed for std::thread.
+3. run make config (to produce the intermediates directories)
+4. run make
 
 # Controls
 e: reverses time in the engine

@@ -1,9 +1,9 @@
 #pragma once
 
+#include <thread>
 #include <vector>
 
 #include "physics/physics.h"
-#include "display/display.h"
 
 namespace phys
 {
@@ -26,7 +26,8 @@ namespace phys
         {
             stop_ = false;
             pause_ = false;
-            thread_.start(thread_function, "Engine Thread", this);
+            std::thread temp(&Engine::thread_function, this);
+            thread_.swap(temp);
         }
 
         //Stops the engine and waits for the thread to end
@@ -34,7 +35,7 @@ namespace phys
         {
             pause_ = true;
             stop_ = true;
-            thread_.wait();
+            thread_.join();
         }
 
         //Pauses thread_function() without terminating the thread
@@ -54,13 +55,13 @@ namespace phys
         bool pause_;
         double speed_;
 
-        disp::Thread thread_;
+        std::thread thread_;
 
         std::vector<Particle>* particles_;
         std::vector<Particle>* obstacles_;
         std::vector<Camera>* cameras_;
 
         //Updates all particles, obstacles, and cameras continuously
-        static int thread_function(void* e);
+        int thread_function();
     };
 }

@@ -1,5 +1,7 @@
 CC = g++
 CFLAGS = -std=gnu++17 -L /usr/local/lib
+LDFLAGS = -pthread
+LIBS = -lSDL2
 
 SRC = src
 DISP_SRC = $(SRC)/display
@@ -13,7 +15,7 @@ PHYS_BLD = $(BLD)/physics
 
 
 _PHYS_H = camera.h clock.h particle.h vector.h
-_DISP_H = box.h point.h renderer.h texture.h thread.h window.h
+_DISP_H = box.h point.h renderer.h texture.h window.h
 _EVEN_H = dispatcher.h event.h handler.h queue.h
 
 _PHYS_O = clock.o particle.o vector.o
@@ -30,14 +32,13 @@ PHYS_O = $(patsubst %, $(PHYS_BLD)/%, $(_PHYS_O))
 
 
 bin/simulation: $(BLD)/main.o $(BLD)/engine.o $(DISP_O) $(PHYS_O)
-	$(CC) $(CFLAGS) $(BLD)/main.o $(BLD)/engine.o $(DISP_O) $(PHYS_O) -lSDL2 -o $@
+	$(CC) $(CFLAGS) $(BLD)/engine.o $(BLD)/main.o $(DISP_O) $(PHYS_O) $(LDFLAGS) $(LIBS) -o $@
 
 $(BLD)/main.o: 	$(SRC)/main.cpp $(SRC)/engine.h\
 				$(DISP_SRC)/display.h $(PHYS_SRC)/physics.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BLD)/engine.o: 	$(SRC)/engine.cpp $(SRC)/engine.h\
-					$(DISP_SRC)/display.h $(PHYS_SRC)/physics.h
+$(BLD)/engine.o: 	$(SRC)/engine.cpp $(SRC)/engine.h $(PHYS_SRC)/physics.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
