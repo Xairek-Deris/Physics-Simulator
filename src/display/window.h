@@ -44,8 +44,6 @@ namespace disp
         Uint32 mouse_state_;
         
         static int ref_count_;
-
-        friend class Display;
     };
 } //namespace disp
 
