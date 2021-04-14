@@ -53,4 +53,31 @@ namespace sim
     private:
         Button* button_;
     };
+
+    class Button_Toggle_Vis: public event::Handler
+    {
+    public:
+        Button_Toggle_Vis(Button& button)
+        : button_{ &button }
+        {}
+
+        void handle(const void* data) override
+        {
+            static bool shown = true;
+            if(shown)
+            {
+                button_->hide();
+                button_->disable();
+            }
+            else
+            {
+                button_->show();
+                button_->enable();
+            }
+            shown = !shown;
+        }
+
+    private:
+        Button* button_;
+    };
 } //namespace sim
