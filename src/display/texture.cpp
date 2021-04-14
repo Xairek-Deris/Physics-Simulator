@@ -24,6 +24,20 @@ disp::Texture::Texture(const Texture&& texture)
     ref_count_++;
 }
 
+disp::Texture disp::Texture::operator=(Texture& t)
+{
+    texture_ = t.texture_;
+    renderer_ = t.renderer_;
+    ref_count_++;
+}
+
+disp::Texture disp::Texture::operator=(Texture&& t)
+{
+    texture_ = t.texture_;
+    renderer_ = t.renderer_;
+    ref_count_++;
+}
+
 disp::Texture::~Texture()
 {
     if(--ref_count_ == 0)

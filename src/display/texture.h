@@ -13,10 +13,17 @@ namespace disp
     class Texture
     {
     public:
+        Texture()
+        : texture_{ NULL }, renderer_{ NULL }
+        {}
+
         Texture(const std::string& f, Renderer& r);
         Texture(const Texture& texture);
         Texture(const Texture&& texture);
         ~Texture();
+
+        Texture operator=(Texture& t);
+        Texture operator=(Texture&& t);
 
         void draw(const Box& box) const
         {
