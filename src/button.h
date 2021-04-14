@@ -11,7 +11,7 @@ namespace sim
     public:
         Button
         (
-            const disp::Texture& text_tex,
+            const disp::Texture& texture,
             const disp::Box& box,
             void (*on_click)(void*),
             void* data
@@ -21,18 +21,18 @@ namespace sim
         {
             if(shown_)
             {
-                active_tex_->draw(box_);
-                text_tex_.draw(box_);
+                texture_.draw(box_);
             }
         }
 
         void press(const disp::Point& p);
         void release(const disp::Point& p);
         void hover(const disp::Point& p);
-        void enable();
-        void disable();
-        void show() { shown_ = true; }
-        void hide() { shown_ = false; }
+
+        void enable()   { disabled_ = false; }
+        void disable()  { disabled_ = true; }
+        void show()     { shown_ = true; }
+        void hide()     { shown_ = false; }
 
     private:
         bool pressed_;
@@ -40,18 +40,10 @@ namespace sim
         bool disabled_;
         bool shown_;
 
-        disp::Texture text_tex_;
-        disp::Texture* active_tex_;
+        disp::Texture texture_;
         disp::Box box_;
 
         void (*on_click_)(void* data);
         void* data_;
-
-        static void load_textures(disp::Renderer& r);
-
-        static disp::Texture default_tex_;
-        static disp::Texture pressed_tex_;
-        static disp::Texture hover_tex_;
-        static disp::Texture disabled_tex_;
     };
 } //namespace sim
